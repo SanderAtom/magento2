@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Observer;
 
@@ -11,20 +11,10 @@ use Magento\Payment\Observer\AbstractDataAssignObserver;
 
 /**
  * Event to copy CardGate Fee data from a quote to an order.
- *
- * @author DBS B.V.
- * @package Magento2
- *
  */
 class SalesEventQuoteSubmitBeforeObserver extends AbstractDataAssignObserver {
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Framework\Event\ObserverInterface::execute()
-	 */
-	public function execute ( \Magento\Framework\Event\Observer $observer ) {
+	public function execute( \Magento\Framework\Event\Observer $observer ) {
 		$quote = $observer->getEvent()->getQuote();
 		$order = $observer->getEvent()->getOrder();
 
@@ -37,4 +27,5 @@ class SalesEventQuoteSubmitBeforeObserver extends AbstractDataAssignObserver {
 
 		return $this;
 	}
+
 }

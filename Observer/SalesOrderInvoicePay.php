@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Observer;
 
@@ -11,20 +11,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Event to copy CardGate Fee data from an order to an invoice.
- *
- * @author DBS B.V.
- * @package Magento2
- *
  */
 class SalesOrderInvoicePay implements ObserverInterface {
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Framework\Event\ObserverInterface::execute()
-	 */
-	public function execute ( EventObserver $observer ) {
+	public function execute( EventObserver $observer ) {
 		$invoice = $observer->getEvent()->getInvoice();
 		$order = $invoice->getOrder();
 
@@ -37,4 +27,5 @@ class SalesOrderInvoicePay implements ObserverInterface {
 
 		return $this;
 	}
+
 }

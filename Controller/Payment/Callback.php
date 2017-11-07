@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Controller\Payment;
 
@@ -11,10 +11,7 @@ use Cardgate\Payment\Model\Config\Master;
 use Magento\Framework\Controller\ResultFactory;
 
 /**
- * Callback handler action
- *
- * @author DBS B.V.
- * @package Magento2
+ * Callback handler action.
  */
 class Callback extends \Magento\Framework\App\Action\Action {
 

@@ -1,23 +1,18 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\PaymentMethod;
 
 /**
- * iDeal exception class because we want another renderer template
- *
- * @author DBS B.V.
- * @package Magento2
+ * iDeal exception class because we want another renderer template.
  */
 class ideal extends \Cardgate\Payment\Model\PaymentMethods {
 
 	/**
-	 * Renderer template name
-	 *
-	 * @var string
+	 * Renderer template name.
 	 */
 	public static $renderer = 'ideal';
 

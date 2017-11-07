@@ -1,25 +1,19 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\PaymentMethod;
-
 
 use Cardgate\Payment\Model\PaymentMethods;
 
 /**
- * Shady exception class because we want to misuse the DI system for nonexistent paymentmethods
- *
- * @author DBS B.V.
- * @package Magento2
+ * Shady exception class because we want to misuse the DI system for nonexistent paymentmethods.
  */
 class nonexistent extends PaymentMethods {
 
-	public function __construct (
-		\Magento\Framework\ObjectManagerInterface $objManager
-	) {
+	public function __construct( \Magento\Framework\ObjectManagerInterface $objManager ) {
 		parent::__construct(
 			$objManager->get( 'Magento\\Framework\\Model\\Context' ),
 			$objManager->get( 'Magento\\Framework\\Registry' ),

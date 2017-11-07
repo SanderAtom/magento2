@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Controller\Payment;
 
@@ -15,69 +15,56 @@ use Magento\Framework\Module\ModuleListInterface;
 use Magento\Framework\App\ObjectManager;
 
 /**
- * Start payment action
- *
- * @author DBS B.V.
- * @package Magento2
+ * Start payment action.
  */
 class Start extends \Magento\Framework\App\Action\Action {
 
 	/**
-	 *
 	 * @var \Magento\Customer\Model\Session
 	 */
 	protected $customerSession;
 
 	/**
-	 *
 	 * @var \Magento\Checkout\Model\Session
 	 */
 	protected $checkoutSession;
 
 	/**
-	 *
 	 * @var \Magento\Framework\App\Config\ScopeConfigInterface
 	 */
 	protected $scopeConfig;
 
 	/**
-	 *
 	 * @var \Magento\Framework\UrlInterface
 	 */
 	protected $urlBuilder;
 
 	/**
-	 *
 	 * @var \Magento\Quote\Model\Quote
 	 */
 	protected $quote = false;
 
 	/**
-	 *
 	 * @var PaymentHelper
 	 */
 	protected $_paymentHelper;
 
 	/**
-	 *
 	 * @var GatewayClient
 	 */
 	private $_gatewayClient;
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config
 	 */
 	private $_cardgateConfig;
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config\Master
 	 */
 	private $_masterConfig;
 
 	/**
-	 *
 	 * @param \Magento\Framework\App\Action\Context $context
 	 * @param \Magento\Customer\Model\Session $customerSession
 	 * @param \Magento\Checkout\Model\Session $checkoutSession

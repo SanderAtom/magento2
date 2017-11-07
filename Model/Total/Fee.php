@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Total;
 
@@ -11,10 +11,7 @@ use \Magento\Framework\App\ObjectManager;
 use \Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector;
 
 /**
- * Inject CardGate fee into totals for quote
- *
- * @author DBS B.V.
- * @package Magento2
+ * Inject CardGate fee into totals for quote.
  */
 class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 
@@ -22,38 +19,22 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 
 	const CODE_FEE = 'cardgatefee';
 
-	/**
-	 * Collect grand total address amount
-	 *
-	 * @param \Magento\Quote\Model\Quote $quote
-	 * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-	 * @param \Magento\Quote\Model\Quote\Address\Total $total
-	 * @return $this
-	 */
 	protected $quoteValidator = null;
 
-	/**
-	 *
-	 * @var Master
-	 */
 	protected $_cardgateConfig;
 
-	public function __construct ( \Magento\Quote\Model\QuoteValidator $quoteValidator, Master $cardgateConfig ) {
+	public function __construct( \Magento\Quote\Model\QuoteValidator $quoteValidator, Master $cardgateConfig ) {
 		$this->_cardgateConfig = $cardgateConfig;
 		$this->quoteValidator = $quoteValidator;
 	}
 
-	public function collect ( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment, \Magento\Quote\Model\Quote\Address\Total $total ) {
+	public function collect( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment, \Magento\Quote\Model\Quote\Address\Total $total ) {
 		parent::collect( $quote, $shippingAssignment, $total );
 
 		if ( $quote->getBillingAddress()->getId() == $shippingAssignment->getShipping()->getAddress()->getId() ) {
 			return $this;
 		}
 
-		/**
-		 *
-		 * @var \Cardgate\Payment\Model\Total\FeeData $fee
-		 */
 		$fee = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Total\\FeeData' );
 		if ( ! empty( $quote->getPayment()->getMethod() ) && $this->_cardgateConfig->isCardgateCode( $quote->getPayment()
 			->getMethod() ) ) {
@@ -100,7 +81,7 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 		return $this;
 	}
 
-	protected function clearValues ( \Magento\Quote\Model\Quote\Address\Total $total ) {
+	protected function clearValues( \Magento\Quote\Model\Quote\Address\Total $total ) {
 		$total->setTotalAmount( 'subtotal', 0 );
 		$total->setBaseTotalAmount( 'subtotal', 0 );
 		$total->setTotalAmount( 'tax', 0 );
@@ -116,18 +97,7 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 		$total->setBaseTotalAmount( 'cardgatefee', 0 );
 	}
 
-	/**
-	 * Assign subtotal amount and label to address object
-	 *
-	 * @param \Magento\Quote\Model\Quote $quote
-	 * @param Address\Total $total
-	 * @return array
-	 */
-	public function fetch ( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total ) {
-		/**
-		 *
-		 * @var \Cardgate\Payment\Model\Total\FeeData $fee
-		 */
+	public function fetch( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total ) {
 		$fee = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Total\\FeeData' );
 		if ( ! empty( $quote->getPayment()->getMethod() ) && $this->_cardgateConfig->isCardgateCode( $quote->getPayment()
 			->getMethod() ) ) {
@@ -142,12 +112,8 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 		];
 	}
 
-	/**
-	 * Get Subtotal label
-	 *
-	 * @return \Magento\Framework\Phrase
-	 */
-	public function getLabel () {
+	public function getLabel() {
 		return __( 'Payment fee getlabel' );
 	}
+
 }

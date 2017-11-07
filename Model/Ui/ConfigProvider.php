@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Ui;
 
@@ -15,50 +15,36 @@ use Cardgate\Payment\Model\GatewayClient;
 use Magento\Framework\App\ObjectManager;
 
 /**
- * UI Config provider
- *
- * @author DBS B.V.
- * @package Magento2
+ * UI Config provider.
  */
 class ConfigProvider implements ConfigProviderInterface {
 
 	/**
-	 *
 	 * @var \Magento\Framework\App\Cache\Type\Collection
 	 */
 	private $cache;
 
 	/**
-	 *
 	 * @var Config
 	 */
 	protected $config;
 
 	/**
-	 *
 	 * @var Escaper
 	 */
 	protected $escaper;
 
 	/**
-	 *
 	 * @var MasterConfig
 	 */
 	private $masterConfig;
 
 	/**
-	 *
 	 * @var GatewayClient
 	 */
 	private $cardgateClient;
 
-	/**
-	 *
-	 * @param PaymentHelper $paymentHelper
-	 * @param Escaper $escaper
-	 * @param MasterConfig $masterConfig
-	 */
-	public function __construct ( PaymentHelper $paymentHelper, Escaper $escaper, MasterConfig $masterConfig, Config $config, GatewayClient $cardgateClient, \Magento\Framework\App\Cache\Type\Collection $cache ) {
+	public function __construct( PaymentHelper $paymentHelper, Escaper $escaper, MasterConfig $masterConfig, Config $config, GatewayClient $cardgateClient, \Magento\Framework\App\Cache\Type\Collection $cache ) {
 		$this->escaper = $escaper;
 		$this->config = $config;
 		$this->cache = $cache;
@@ -66,16 +52,7 @@ class ConfigProvider implements ConfigProviderInterface {
 		$this->cardgateClient = $cardgateClient;
 	}
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 */
-	public function getConfig () {
-		/**
-		 *
-		 * @var \Magento\Checkout\Model\Session $session
-		 */
+	public function getConfig() {
 		$session = ObjectManager::getInstance()->get( 'Magento\\Checkout\\Model\\Session' );
 
 		$config = [];
@@ -104,10 +81,8 @@ class ConfigProvider implements ConfigProviderInterface {
 	/**
 	 * Get list of iDeal issuers.
 	 * Read from cache or fetch from CardGate if not cached.
-	 *
-	 * @return string|boolean|stdClass[id,name,list]
 	 */
-	public function getIDealIssuers () {
+	public function getIDealIssuers() {
 		$testmode = boolval( $this->cardgateClient->getTestmode() );
 		$cacheID = "cgIDealIssuers" . ( $testmode ? 'test' : 'live' );
 		if ( $this->cache->test( $cacheID ) !== false ) {
@@ -130,4 +105,5 @@ class ConfigProvider implements ConfigProviderInterface {
 		}
 		return $issuers;
 	}
+
 }

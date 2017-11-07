@@ -1,51 +1,37 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Total;
 
 /**
  * FeeData structure object.
- *
- * @author DBS B.V.
- * @package Magento2
  */
 class FeeData {
 
 	/**
-	 *
 	 * @var float
 	 */
 	protected $amount;
 
 	/**
-	 *
 	 * @var float
 	 */
 	protected $tax_amount;
 
 	/**
-	 *
 	 * @var int
 	 */
 	protected $tax_class;
 
 	/**
-	 *
 	 * @var boolean
 	 */
 	protected $fee_includes_tax;
 
-	/**
-	 *
-	 * @param float $amount
-	 * @param float $tax_amount
-	 * @param int $tax_class
-	 * @param boolean $fee_includes_tax
-	 */
-	function __construct ( $amount = 0, $tax_amount = 0, $tax_class = null, $fee_includes_tax = true ) {
+	function __construct( $amount = 0, $tax_amount = 0, $tax_class = null, $fee_includes_tax = true ) {
 		$this->amount = $amount;
 		$this->tax_amount = $tax_amount;
 		$this->tax_class = $tax_class;
@@ -61,47 +47,37 @@ class FeeData {
 	}
 
 	/**
-	 * Get fee amount including tax
-	 *
-	 * @return float
+	 * Get fee amount including tax.
 	 */
-	function getTotal () {
+	function getTotal() {
 		return $this->amount + $this->tax_amount;
 	}
 
 	/**
-	 * Get fee amount
-	 *
-	 * @return float
+	 * Get fee amount.
 	 */
-	function getAmount () {
+	function getAmount() {
 		return $this->amount;
 	}
 
 	/**
-	 * Get tax amount
-	 *
-	 * @return float
+	 * Get tax amount.
 	 */
-	function getTaxAmount () {
+	function getTaxAmount() {
 		return $this->tax_amount;
 	}
 
 	/**
-	 * Get Tax class
-	 *
-	 * @return int
+	 * Get Tax class.
 	 */
-	function getTaxClass () {
+	function getTaxClass() {
 		return $this->tax_class;
 	}
 
 	/**
-	 * Check if fee should include tax when displayed
-	 *
-	 * @return boolean
+	 * Check if fee should include tax when displayed.
 	 */
-	function getFeeIncludesTax () {
+	function getFeeIncludesTax() {
 		return $this->fee_includes_tax;
 	}
 

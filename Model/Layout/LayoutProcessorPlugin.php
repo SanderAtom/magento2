@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Layout;
 
@@ -10,32 +10,23 @@ use Cardgate\Payment\Model\Config\Master;
 use Magento\Checkout\Block\Checkout\LayoutProcessor;
 
 /**
- * Layout Processor plugin to inject paymentmethods in checkout billing-step section
- *
- * @author DBS B.V.
- * @package Magento2
+ * Layout Processor plugin to inject paymentmethods in checkout billing-step section.
  */
 class LayoutProcessorPlugin {
 
 	/**
-	 *
 	 * @var Master $_masterConfig
 	 */
 	private $_masterConfig = null;
 
-	public function __construct ( Master $masterConfig ) {
+	public function __construct( Master $masterConfig ) {
 		$this->_masterConfig = $masterConfig;
 	}
 
 	/**
-	 * Inject paymentmethods in checkout billing-step section
-	 *
-	 * @param LayoutProcessor $layoutProcessor
-	 * @param \Closure $proceed
-	 * @param unknown $scope
-	 * @return string[]|boolean[]
+	 * Inject paymentmethods in checkout billing-step section.
 	 */
-	public function aroundProcess ( LayoutProcessor $layoutProcessor, \Closure $proceed, $scope ) {
+	public function aroundProcess( LayoutProcessor $layoutProcessor, \Closure $proceed, $scope ) {
 		$data = $proceed( $scope );
 		$arr = [
 			'component' => 'Cardgate_Payment/js/view/payment/paymentmethods',

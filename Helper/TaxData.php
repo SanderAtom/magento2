@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Helper;
 
@@ -26,7 +26,7 @@ class TaxData extends \Magento\Tax\Helper\Data {
 	 * @param \Magento\Sales\Model\Order|\Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $source
 	 * @return array
 	 */
-	public function aroundGetCalculatedTaxes ( \Magento\Tax\Helper\Data $taxData, \Closure $proceed, $source ) {
+	public function aroundGetCalculatedTaxes( \Magento\Tax\Helper\Data $taxData, \Closure $proceed, $source ) {
 		$taxClassAmount = [];
 		if ( empty( $source ) ) {
 			return $taxClassAmount;
@@ -89,7 +89,7 @@ class TaxData extends \Magento\Tax\Helper\Data {
 	 * @param float $ratio
 	 * @return array
 	 */
-	private function __aggregateTaxes ( $taxClassAmount, OrderTaxDetailsItemInterface $itemTaxDetail, $ratio ) {
+	private function __aggregateTaxes( $taxClassAmount, OrderTaxDetailsItemInterface $itemTaxDetail, $ratio ) {
 		$itemAppliedTaxes = $itemTaxDetail->getAppliedTaxes();
 		foreach ( $itemAppliedTaxes as $itemAppliedTax ) {
 			$taxAmount = $itemAppliedTax->getAmount() * $ratio;

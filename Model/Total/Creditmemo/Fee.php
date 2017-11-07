@@ -1,38 +1,24 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Total\Creditmemo;
 
 use Magento\Sales\Model\Order\Creditmemo;
 
 /**
- * Inject CardGate fee into Creditmemo
- *
- * @author DBS B.V.
- * @package Magento2
+ * Inject CardGate fee into Creditmemo.
  */
 class Fee extends \Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal {
 
-	/**
-	 * Constructor
-	 * By default is looking for first argument as array and assigns it as
-	 * object
-	 * attributes This behavior may change in child classes
-	 *
-	 * @param array $data
-	 */
-	public function __construct ( array $data = [] ) {
+	public function __construct( array $data = [] ) {
 		parent::__construct( $data );
 	}
 
 	/**
-	 * Collect CardGate fee for the credit memo
-	 *
-	 * @param Creditmemo $creditmemo
-	 * @return $this
+	 * Collect CardGate fee for the credit memo.
 	 */
 	public function collect ( Creditmemo $creditmemo ) {
 		$store = $creditmemo->getStore();
@@ -54,4 +40,5 @@ class Fee extends \Magento\Sales\Model\Order\Creditmemo\Total\AbstractTotal {
 
 		return $this;
 	}
+
 }

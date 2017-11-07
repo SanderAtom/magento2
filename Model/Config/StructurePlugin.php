@@ -1,61 +1,43 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Config;
 
 use Cardgate\Payment\Model\Config\Master as MasterConfig;
 
 /**
- * Config Structure plugin
- *
- * @author DBS B.V.
- * @package Magento2
+ * Config Structure plugin.
  */
 class StructurePlugin {
 
 	/**
-	 *
 	 * @var \Magento\Config\Model\Config\ScopeDefiner
 	 */
 	protected $_scopeDefiner;
 
 	/**
-	 *
 	 * @var MasterConfig
 	 */
 	protected $_masterConfig;
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config
 	 */
 	protected $_cgconfig;
 
-	/**
-	 *
-	 * @param \Magento\Config\Model\Config\ScopeDefiner $scopeDefiner
-	 * @param MasterConfig $cardgateConfig
-	 * @param \Cardgate\Payment\Model\Config $config
-	 */
-	public function __construct ( \Magento\Config\Model\Config\ScopeDefiner $scopeDefiner, MasterConfig $cardgateConfig, \Cardgate\Payment\Model\Config $config ) {
+	public function __construct( \Magento\Config\Model\Config\ScopeDefiner $scopeDefiner, MasterConfig $cardgateConfig, \Cardgate\Payment\Model\Config $config ) {
 		$this->_scopeDefiner = $scopeDefiner;
 		$this->_masterConfig = $cardgateConfig;
 		$this->_cgconfig = $config;
 	}
 
 	/**
-	 * Substitute payment section with CardGate configs
-	 *
-	 * @param \Magento\Config\Model\Config\Structure $subject
-	 * @param \Closure $proceed
-	 * @param array $pathParts
-	 * @return \Magento\Config\Model\Config\Structure\ElementInterface
-	 *         @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 * Substitute payment section with CardGate configs.
 	 */
-	public function aroundGetElementByPathParts ( \Magento\Config\Model\Config\Structure $subject, \Closure $proceed, array $pathParts ) {
+	public function aroundGetElementByPathParts( \Magento\Config\Model\Config\Structure $subject, \Closure $proceed, array $pathParts ) {
 		/** @var \Magento\Config\Model\Config\Structure\Element\Section $result **/
 		$result = $proceed( $pathParts );
 
@@ -119,4 +101,5 @@ class StructurePlugin {
 		}
 		return $result;
 	}
+
 }

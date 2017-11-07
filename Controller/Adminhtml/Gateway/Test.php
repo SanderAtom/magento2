@@ -19,6 +19,7 @@ class Test extends Action {
 	public function execute() {
 		$oGatewayClient = ObjectManager::getInstance()->get( GatewayClient::class );
 		$sResult = $this->resultFactory->create( ResultFactory::TYPE_RAW );
+
 		$sTestResult = "Testing Cardgate gateway communication...\n\n";
 		try {
 			$oPMResult = $oGatewayClient->postRequest( 'options/' . $oGatewayClient->getSiteId() );
@@ -29,6 +30,7 @@ class Test extends Action {
 		} catch ( \Exception $e_ ) {
 			$sTestResult .= "Error occurred : " . $e_->getMessage();
 		}
+
 		$sResult->setContents( '<pre>' . $sTestResult . "\n\nCompleted.<pre>" );
 		return $sResult;
 	}

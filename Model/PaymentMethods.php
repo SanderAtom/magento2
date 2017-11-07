@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model;
 
@@ -13,13 +13,9 @@ use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Framework\App\ObjectManager;
 
 /**
- * Base Payment class from which all paymentmethods extend
- * YYY: This class should not be extended
+ * Base Payment class from which all paymentmethods extend.
+ * YYY: This class should not be extended.
  * \Magento\Payment\Model\Method\AbstractMethod
- *
- * @author DBS B.V.
- * @package Magento2
- *
  */
 class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 
@@ -32,9 +28,7 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 	const ORDER_STATUS_REFUND = 'cardgate_refund';
 
 	/**
-	 * CUROPayments order status codes
-	 *
-	 * @var array
+	 * CUROPayments order status codes.
 	 */
 	public static $ORDER_STATUS_CODES = [
 		'0' => 'Transaction in progress',
@@ -76,39 +70,30 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 
 	/**
 	 * See /web/js/view/payment/method-renderer
-	 *
-	 * @var string
 	 */
 	public static $renderer = 'paymentmethods';
 
 	/**
-	 * Payment method code
-	 *
-	 * @var string
+	 * Payment method code.
 	 */
 	protected $_code = self::PAYMENT_METHOD_CODE;
 
 	/**
-	 *
 	 * @var string
 	 */
 	protected $_formBlockType = 'Cardgate\Payment\Block\Form\DefaultForm';
 
 	/**
-	 *
 	 * @var string
 	 */
 	protected $_infoBlockType = 'Cardgate\Payment\Block\Info\DefaultInfo';
 
 	/**
-	 * Availability option
-	 *
-	 * @var bool
+	 * Availability option.
 	 */
 	protected $_isOffline = false;
 
 	/**
-	 *
 	 * @var boolean
 	 */
 	protected $_canReviewPayment = true;
@@ -124,71 +109,47 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 	protected $_canRefundInvoicePartial = true;
 
 	/**
-	 *
 	 * @var OrderSender
 	 */
 	protected $orderSender;
 
 	/**
-	 *
 	 * @var invoiceSender
 	 */
 	protected $invoiceSender;
 
 	/**
-	 *
 	 * @var \Magento\Sales\Model\Order\Payment\Transaction\Repository
 	 */
 	protected $transactionRepository;
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config\Master
 	 */
 	protected $cardgateConfig;
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config
 	 */
 	protected $config;
 
-	/**
-	 *
-	 * @param \Magento\Framework\Model\Context $context
-	 * @param \Magento\Framework\Registry $registry
-	 * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
-	 * @param \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory
-	 * @param \Magento\Payment\Helper\Data $paymentData
-	 * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-	 * @param Logger $logger
-	 * @param \Cardgate\Payment\Model\Config\Master $master
-	 * @param \Cardgate\Payment\Model\Config $config
-	 * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
-	 * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
-	 * @param \Magento\Sales\Model\Order\Payment\Transaction\Repository $transactionRepository
-	 * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
-	 * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
-	 * @param array $data
-	 *        	@SuppressWarnings(PHPMD.ExcessiveParameterList)
-	 */
-	public function __construct (
-			\Magento\Framework\Model\Context $context,
-			\Magento\Framework\Registry $registry,
-			\Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
-			\Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
-			\Magento\Payment\Helper\Data $paymentData,
-			\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-			\Magento\Payment\Model\Method\Logger $logger,
-			\Cardgate\Payment\Model\Config\Master $master,
-			\Cardgate\Payment\Model\Config $config,
-			\Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
-			\Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
-			\Magento\Sales\Model\Order\Payment\Transaction\Repository $transactionRepository,
-			\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-			\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-			array $data = []
-		) {
+	public function __construct(
+		\Magento\Framework\Model\Context $context,
+		\Magento\Framework\Registry $registry,
+		\Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
+		\Magento\Framework\Api\AttributeValueFactory $customAttributeFactory,
+		\Magento\Payment\Helper\Data $paymentData,
+		\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+		\Magento\Payment\Model\Method\Logger $logger,
+		\Cardgate\Payment\Model\Config\Master $master,
+		\Cardgate\Payment\Model\Config $config,
+		\Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
+		\Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+		\Magento\Sales\Model\Order\Payment\Transaction\Repository $transactionRepository,
+		\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+		\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+		array $data = []
+	) {
 
 		// compose payment_code
 		$this->_code = substr( \get_called_class(), strrpos( \get_called_class(), '\\' ) + 1 );
@@ -210,12 +171,7 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		$this->config = $config;
 	}
 
-	/**
-	 *
-	 * @param \Magento\Quote\Model\Quote $quote
-	 * @return \Cardgate\Payment\Model\Total\FeeData
-	 */
-	public function getFeeForQuote ( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total = null ) {
+	public function getFeeForQuote( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total = null ) {
 		if ( ! is_null( $total ) ) {
 			$calculatedTotal = array_sum( $total->getAllBaseTotalAmounts() );
 			foreach ( $total->getAllBaseTotalAmounts() as $k => $v ) {
@@ -263,13 +219,7 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 				] );
 	}
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Payment\Model\Method\AbstractMethod::assignData()
-	 */
-	public function assignData ( \Magento\Framework\DataObject $data ) {
+	public function assignData( \Magento\Framework\DataObject $data ) {
 		$additional = $data->getAdditionalData();
 		if ( ! is_array( $additional ) ) {
 			return $this;
@@ -281,37 +231,19 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		return $this;
 	}
 
-	/**
-	 *
-	 * @return string
-	 */
-	public function getPayableTo () {
+	public function getPayableTo() {
 		return $this->getConfigData( 'payable_to' );
 	}
 
-	/**
-	 *
-	 * @return string
-	 */
-	public function getMailingAddress () {
+	public function getMailingAddress() {
 		return $this->getConfigData( 'mailing_address' );
 	}
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Payment\Model\Method\AbstractMethod::acceptPayment()
-	 */
-	public function acceptPayment ( InfoInterface $payment ) {
+	public function acceptPayment( InfoInterface $payment ) {
 		return true;
 	}
 
-	public function refreshTransactionStatus ( $transactionId ) {
-		/**
-		 *
-		 * @var \Cardgate\Payment\Model\GatewayClient $gatewayClient
-		 */
+	public function refreshTransactionStatus( $transactionId ) {
 		$gatewayClient = ObjectManager::getInstance()->get( "Cardgate\\Payment\\Model\\GatewayClient" );
 		$gatewayResult = $gatewayClient->postRequest( 'transaction/' . $transactionId );
 		if ( is_object( $gatewayResult ) && isset( $gatewayResult->transaction ) ) {
@@ -332,12 +264,7 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		}
 	}
 
-	/**
-	 *
-	 * @param Order $order
-	 * @param array $requestParams
-	 */
-	public function processTransactionStatus ( Order $order, $requestParams ) {
+	public function processTransactionStatus( Order $order, $requestParams ) {
 		$transactionId = $requestParams['transaction'];
 		$reference = $requestParams['reference'];
 		$testmode = $requestParams['testmode'];
@@ -350,10 +277,6 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		$ip = $requestParams['ip'];
 		$pt = $requestParams['pt'];
 
-		/**
-		 *
-		 * @var \Magento\Sales\Model\Order\Payment $payment
-		 */
 		$payment = $order->getPayment();
 		if ( empty( $payment ) ) {
 			// Uh? Create payment here?
@@ -385,10 +308,6 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 
 			// uncancel if needed
 			if ( $order->isCanceled() ) {
-				/**
-				 *
-				 * @var \Magento\CatalogInventory\Model\Spi\StockRegistryProviderInterface $stockRegistry
-				 */
 				$stockRegistry = ObjectManager::getInstance()->get( "Magento\\CatalogInventory\\Model\\Spi\\StockRegistryProviderInterface" );
 				foreach ( $order->getItems() as $item ) {
 					/**
@@ -408,10 +327,6 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 			}
 
 			// Test if transaction has been processed already
-			/**
-			 *
-			 * @var Transaction $currentTransaction
-			 */
 			$currentTransaction = $this->transactionRepository->getByTransactionId( $transactionId, $payment->getId(), $order->getId() );
 			if ( ! empty( $currentTransaction ) ) {
 				if ( $currentTransaction->getTxnType() == Transaction::TYPE_CAPTURE ) {

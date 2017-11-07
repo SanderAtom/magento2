@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Observer;
 
@@ -12,25 +12,11 @@ use Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
- * Resets quote totals
- *
- * @author DBS B.V.
- * @package Magento2
- *
+ * Resets quote totals.
  */
 class SalesEventQuoteResetTotalsObserver implements ObserverInterface {
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Framework\Event\ObserverInterface::execute()
-	 */
-	public function execute ( EventObserver $observer ) {
-		/**
-		 *
-		 * @var \Magento\Quote\Model\Quote $quote
-		 */
+	public function execute( EventObserver $observer ) {
 		$quote = $observer->getEvent()->getQuote();
 		$quote->setCardgatefeeAmount( 0 );
 		$quote->setBaseCardgatefeeAmount( 0 );
@@ -39,10 +25,6 @@ class SalesEventQuoteResetTotalsObserver implements ObserverInterface {
 		$quote->setCardgatefeeInclTax( 0 );
 		$quote->setBaseCardgatefeeInclTax( 0 );
 
-		/**
-		 *
-		 * @var \Magento\Quote\Model\Quote\Address $address
-		 */
 		foreach ( $quote->getAllAddresses() as $address ) {
 			$associatedTaxables = $address->getAssociatedTaxables();
 			if ( ! $associatedTaxables ) {
@@ -68,4 +50,5 @@ class SalesEventQuoteResetTotalsObserver implements ObserverInterface {
 
 		return $this;
 	}
+
 }

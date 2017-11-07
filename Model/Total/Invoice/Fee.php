@@ -1,36 +1,22 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Total\Invoice;
 
 /**
- * Inject Fee into invoice (for tax injection see Helper/TaxData)
- *
- * @author DBS B.V.
- * @package Magento2
+ * Inject Fee into invoice (for tax injection see Helper/TaxData).
  */
 class Fee extends \Magento\Sales\Model\Order\Invoice\Total\AbstractTotal {
 
-	/**
-	 * Constructor
-	 * By default is looking for first argument as array and assigns it as
-	 * object
-	 * attributes This behavior may change in child classes
-	 *
-	 * @param array $data
-	 */
-	public function __construct ( array $data = [] ) {
+	public function __construct( array $data = [] ) {
 		parent::__construct( $data );
 	}
 
 	/**
-	 * Collect Weee amounts for the invoice
-	 *
-	 * @param \Magento\Sales\Model\Order\Invoice $invoice
-	 * @return $this
+	 * Collect Weee amounts for the invoice.
 	 */
 	public function collect ( \Magento\Sales\Model\Order\Invoice $invoice ) {
 		$store = $invoice->getStore();
@@ -44,4 +30,5 @@ class Fee extends \Magento\Sales\Model\Order\Invoice\Total\AbstractTotal {
 
 		return $this;
 	}
+
 }

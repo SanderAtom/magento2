@@ -1,18 +1,15 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Controller\Payment;
 
 use Magento\Checkout\Model\Session;
 
 /**
- * Client redirect after payment action
- *
- * @author DBS B.V.
- * @package Magento2
+ * Client redirect after payment action.
  */
 class Redirect extends \Magento\Framework\App\Action\Action {
 

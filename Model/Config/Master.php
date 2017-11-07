@@ -1,35 +1,27 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Config;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-/**
- *
- * @author DBS B.V.
- * @package Magento2
- */
 class Master {
 
 	/**
-	 *
 	 * @var array
 	 */
 	private $paymentMethodIds = [];
 
 	/**
-	 *
 	 * @var array
 	 */
 	private $paymentMethodCodes = [];
 
 	/**
-	 *
 	 * @var \Magento\Framework\App\Cache\Type\Collection
 	 */
 	private $cache;
@@ -42,12 +34,11 @@ class Master {
 	const CACHEKEY = "cgAllPM";
 
 	/**
-	 *
 	 * @var \Cardgate\Payment\Model\Config
 	 */
 	private $config;
 
-	public function __construct ( \Magento\Framework\App\Cache\Type\Collection $cache, \Magento\Framework\Filesystem $filesystem ) {
+	public function __construct( \Magento\Framework\App\Cache\Type\Collection $cache, \Magento\Framework\Filesystem $filesystem ) {
 		$this->cache = $cache;
 		$this->filesystem = $filesystem;
 		if ( $this->cache->test( self::CACHEKEY ) !== false ) {
@@ -70,34 +61,24 @@ class Master {
 	}
 
 	/**
-	 * Set CardGate config
-	 *
-	 * @param \Cardgate\Payment\Model\Config $config
+	 * Set CardGate config.
 	 */
-	public function setConfig ( \Cardgate\Payment\Model\Config $config ) {
+	public function setConfig( \Cardgate\Payment\Model\Config $config ) {
 		$this->config = $config;
 	}
 
 	/**
-	 * Get Paymentmethod classname by Code
-	 *
-	 * @param string $paymentMethodCode
-	 * @param string $fullClassName
-	 * @return string
+	 * Get Paymentmethod classname by Code.
 	 */
-	public function getPMClassByCode ( $paymentMethodCode, $fullClassName = true ) {
+	public function getPMClassByCode( $paymentMethodCode, $fullClassName = true ) {
 		return ( $fullClassName ? 'Cardgate\\Payment\\Model\\PaymentMethod\\' : '' ) . substr( $paymentMethodCode, 9 );
 	}
 
 	/**
 	 * Get Paymentmethod instance by Code.
-	 * $force can be set to ensure class exists (or create it if not exists)
-	 *
-	 * @param string $paymentMethodCode
-	 * @param string $force
-	 * @return \Cardgate\Payment\Model\PaymentMethods
+	 * $force can be set to ensure class exists (or create it if not exists).
 	 */
-	public function getPMInstanceByCode ( $paymentMethodCode, $force = false ) {
+	public function getPMInstanceByCode( $paymentMethodCode, $force = false ) {
 		if ( $force ) {
 			$this->ensurePaymentClass( $paymentMethodCode );
 		}
@@ -105,42 +86,30 @@ class Master {
 	}
 
 	/**
-	 * Test if Paymentmethod ID exists (CardGate style ID)
-	 *
-	 * @param string $paymentMethodId
-	 * @return boolean
+	 * Test if Paymentmethod ID exists (CardGate style ID).
 	 */
-	public function hasPMId ( $paymentMethodId ) {
+	public function hasPMId( $paymentMethodId ) {
 		return isset( $this->paymentMethodIds[$paymentMethodId] );
 	}
 
 	/**
-	 * Tests if Paymentmethod Code is a CardGate Code
-	 *
-	 * @param unknown $paymentMethodCode
-	 * @return boolean
+	 * Tests if Paymentmethod Code is a CardGate Code.
 	 */
-	public function isCardgateCode ( $paymentMethodCode ) {
+	public function isCardgateCode( $paymentMethodCode ) {
 		return ( substr( $paymentMethodCode, 0, 9 ) == 'cardgate_' );
 	}
 
 	/**
-	 * Get Paymentmethod Code for a given PM ID (CardGate style ID)
-	 *
-	 * @param unknown $paymentMethodId
-	 * @return string
+	 * Get Paymentmethod Code for a given PM ID (CardGate style ID).
 	 */
-	public function getPMCodeById ( $paymentMethodId ) {
+	public function getPMCodeById( $paymentMethodId ) {
 		return 'cardgate_' . $paymentMethodId;
 	}
 
 	/**
 	 * Create Paymentmethod Class if not exists.
-	 *
-	 * @param unknown $paymentMethodCode
-	 * @return void
 	 */
-	private function ensurePaymentClass ( $paymentMethodCode ) {
+	private function ensurePaymentClass( $paymentMethodCode ) {
 		if ( ! \class_exists( $this->getPMClassByCode( $paymentMethodCode ) ) ) {
 			/** @var \Magento\Framework\Filesystem\Directory\Write $directory */
 			$directory = $this->filesystem->getDirectoryWrite( DirectoryList::TMP );
@@ -152,11 +121,9 @@ class Master {
 	}
 
 	/**
-	 * Load Paymentmethods and save them in cache
-	 *
-	 * @return void
+	 * Load Paymentmethods and save them in cache.
 	 */
-	private function updatePaymentMethods () {
+	private function updatePaymentMethods() {
 		// YYY: Make dynamic
 		$this->paymentMethodIds = [
 			'ideal' => 'iDeal',
@@ -184,11 +151,11 @@ class Master {
 		$this->cache->save( serialize( $this->paymentMethodIds ), self::CACHEKEY, [], 24 * 3600 );
 	}
 
-	public function getCardgateMethods () {
+	public function getCardgateMethods() {
 		return $this->paymentMethodIds;
 	}
 
-	public function getPaymentMethods ( $bIncludingNames = false ) {
+	public function getPaymentMethods( $bIncludingNames = false ) {
 		if ( $bIncludingNames ) {
 			return $this->paymentMethodCodes;
 		} else {

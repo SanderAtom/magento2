@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Setup;
 
@@ -13,21 +13,13 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 /**
  * Install Schema class.
  * Executed at first installation of this plugin.
- *
- * @author DBS B.V.
- * @package Magento2
- *
  */
 class InstallSchema implements InstallSchemaInterface {
 
-	/**
-	 *
-	 * {@inheritdoc} @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-	 */
-	public function install ( SchemaSetupInterface $setup, ModuleContextInterface $context ) {
+	public function install( SchemaSetupInterface $setup, ModuleContextInterface $context ) {
 		$setup->startSetup();
 
-			// QUOTE_PAYMENT TABLE
+		// QUOTE_PAYMENT TABLE
 		$quotePaymentTable = $setup->getTable( 'quote_payment' );
 
 		$quotePaymentColumns = [
@@ -281,4 +273,5 @@ class InstallSchema implements InstallSchemaInterface {
 			$setup->getConnection()->addColumn( $orderPaymentTable, $columnName, $definition );
 		}
 	}
+
 }

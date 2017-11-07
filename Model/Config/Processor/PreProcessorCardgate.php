@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Model\Config\Processor;
 
@@ -14,10 +14,7 @@ use Magento\Framework\App\ObjectManager;
 
 class PreProcessorCardgate implements PreProcessorInterface {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function process ( array $config ) {
+	public function process( array $config ) {
 		$masterConfig = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Config\\Master' );
 		foreach ( $masterConfig->getPaymentMethods( true ) as $paymentMethod => $paymentMethodName ) {
 			if ( !isset( $config['default']['payment'][$paymentMethod] ) ) {
@@ -35,4 +32,5 @@ class PreProcessorCardgate implements PreProcessorInterface {
 		}
 		return $config;
 	}
+
 }
