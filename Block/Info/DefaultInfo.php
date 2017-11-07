@@ -1,23 +1,16 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Block\Info;
 
-/**
- * Default Checkout template
- *
- * @author DBS B.V.
- * @package Magento2
- */
 class DefaultInfo extends \Magento\Payment\Block\Info {
 
 	/**
-	 * Checkout template
-	 *
-	 * @var string
+	 * Checkout template.
 	 */
 	protected $_template = 'Cardgate_Payment::info/defaultinfo.phtml';
+
 }

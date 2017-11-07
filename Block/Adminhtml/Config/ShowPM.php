@@ -1,51 +1,30 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 namespace Cardgate\Payment\Block\Adminhtml\Config;
 
 use Cardgate\Payment\Model\Config;
 
 /**
- * Render for "show paymentmethod" element
- *
- * @author DBS B.V.
- * @package Magento2
+ * Show payment methods HTML block renderer.
  */
 class ShowPM extends \Magento\Config\Block\System\Config\Form\Field {
 
-	/**
-	 *
-	 * @var Config
-	 */
-	private $config;
+	private $_oConfig;
 
-	/**
-	 *
-	 * @param \Magento\Backend\Block\Context $context
-	 * @param \Magento\Backend\Model\Auth\Session $authSession
-	 * @param \Magento\Framework\View\Helper\Js $jsHelper
-	 * @param \Magento\Config\Model\Config $backendConfig
-	 * @param array $data
-	 */
-	public function __construct ( \Magento\Backend\Block\Template\Context $context, Config $backendConfig, array $data = [] ) {
-		$this->config = $backendConfig;
-		parent::__construct( $context, $data );
+	public function __construct( \Magento\Backend\Block\Template\Context $oContext_, Config $oConfig_, array $aData_ = [] ) {
+		$this->_oConfig = $oConfig_;
+		parent::__construct( $oContext_, $aData_ );
 	}
 
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \Magento\Config\Block\System\Config\Form\Field::_getElementHtml()
-	 */
-	protected function _getElementHtml ( \Magento\Framework\Data\Form\Element\AbstractElement $element ) {
-		if ( empty( $this->config->getGlobal( 'active_pm' ) ) ) {
-			return "<span style='color:red'>".__("No active paymentmethods found")."</span>";
+	protected function _getElementHtml( \Magento\Framework\Data\Form\Element\AbstractElement $oElement_ ) {
+		if ( empty( $this->_oConfig->getGlobal( 'active_pm' ) ) ) {
+			return '<span style="color:red;">' . __( 'No active paymentmethods found' ) . '</span>';
 		} else {
-			return implode( ', ', $this->config->getActivePMIDs() );
+			return implode( ', ', $this->_oConfig->getActivePMIds() );
 		}
 	}
 

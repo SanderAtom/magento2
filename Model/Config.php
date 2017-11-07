@@ -102,7 +102,7 @@ class Config implements ConfigInterface {
 	 * @param number $storeId
 	 * @return mixed
 	 */
-	public function getActivePMIDs ( $storeId = 0 ) {
+	public function getActivePMIds ( $storeId = 0 ) {
 		if ( isset( self::$activePMIDs[$storeId] ) && is_array( self::$activePMIDs[$storeId] ) ) {
 			return self::$activePMIDs[$storeId];
 		}
