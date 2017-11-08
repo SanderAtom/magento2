@@ -17,8 +17,6 @@ Please visit [My Cardgate](https://my.cardgate.com/) and retrieve your RESTful A
 
 ## Installation
 
-### Composer
-
 The CardGate Module for Magento 2 is installed via [Composer](http://getcomposer.org/).
 
 1. Go to Magento 2 root folder.
@@ -45,18 +43,6 @@ The CardGate Module for Magento 2 is installed via [Composer](http://getcomposer
    ```
    php bin/magento setup:static-content:deploy
    ```
-
-### Manually
-
-To install the CardGate Module for Magento 2 manually follow the steps below.
-
-1. Download the most recent zip file from the [Releases](https://github.com/cardgate/magento2/releases) page.
-
-2. Go to Magento 2 root folder.
-
-3. Extract the contents of the zip file into **app/code/Cardgate/Payment**, create the folder structure if necessary.
-
-3. Follow the steps from the Composer installation, starting with step 3.
 
 ## Configuration
 

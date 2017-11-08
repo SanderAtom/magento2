@@ -47,7 +47,7 @@ class GroupInfo extends \Magento\Config\Block\System\Config\Form\Fieldset {
 			$this->_authSession->getUser()->setExtra( $aExtra );
 			return FALSE;
 		}
-		if ( ! empty( $_SERVER['CGP_API_URL'] ) ) {
+		if ( ! empty( $_SERVER['CG_API_URL'] ) ) {
 			// NOTE see above.
 			$aExtra['configState']['cardgate_info'] = TRUE;
 			$aExtra['configState']['cardgate_info_test'] = TRUE;

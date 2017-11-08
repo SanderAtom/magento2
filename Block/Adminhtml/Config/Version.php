@@ -32,7 +32,7 @@ class Version extends \Magento\Config\Block\System\Config\Form\Field {
 		return
 			"v{$sVersion}"
 			. ( $this->_oConfig->getGlobal( 'testmode' ) ? ' <span style="color:red;">' . __( 'TESTMODE ENABLED' ) . '</span>' : '' )
-			. ( ! empty( $_SERVER['CGP_API_URL'] ) ? ' <span style="color:red;">API OVERRIDE (' . $_SERVER['CGP_API_URL'] . ')</span>' : '' )
+			. ( ! empty( $_SERVER['CG_API_URL'] ) ? ' <span style="color:red;">API OVERRIDE (' . $_SERVER['CG_API_URL'] . ')</span>' : '' )
 		;
 	}
 

@@ -6,106 +6,102 @@
  */
 namespace Cardgate\Payment\Model;
 
-use curopayments\api\Client;
-use Cardgate\Payment\Model\Config;
-use Magento\Framework\Encryption\EncryptorInterface;
-use Magento\Sales\Model\Order\Address;
-
 /**
- * Gateway Client wrapper for CUROPayments RESTful API library.
+ * Cardgate client wrapper, proxies all calls to a fully configured CardGate client instance.
+ * The CardGate client is installed as a dependency by Composer.
+ * @see https://github.com/cardgate/cardgate-clientlib-php
  */
-class GatewayClient extends Client {
+class GatewayClient {
 
 	/**
-	 * @var \Cardgate\Payment\Model\Config
+	 * @var \cardgate\api\Client
 	 */
-	private $config;
+	private $_oClient;
 
 	/**
-	 * @var \Magento\Framework\Encryption\EncryptorInterface
+	 * @var int
 	 */
-	private $encryptor;
+	private $_iSiteId;
 
-	public function __construct( Config $config, EncryptorInterface $encryptor ) {
-		$this->config = $config;
-		$this->encryptor = $encryptor;
+	/**
+	 * @var string
+	 */
+	private $_sSiteKey;
 
-		parent::__construct( boolval( $this->config->getGlobal( 'testmode' ) ) );
-		$this->setMerchantName( $this->config->getGlobal( 'api_username' ) );
-		$this->setKey( $this->encryptor->decrypt( $this->config->getGlobal( 'api_password' ) ) );
+	/**
+	 * @param \Cardgate\Payment\Model\Config
+	 * @param \Magento\Framework\Encryption\EncryptorInterface
+	 */
+	public function __construct(
+		\Cardgate\Payment\Model\Config $oConfig_,
+		\Magento\Framework\Encryption\EncryptorInterface $oEncryptor_,
+		\Magento\Framework\Locale\Resolver $oLocaleResolver_,
+		\Magento\Framework\App\ProductMetadata $oMetaData_,
+		\Magento\Framework\Module\ModuleListInterface $oModuleList_
+	) {
+		$this->_iSiteId = (int)$oConfig_->getGlobal( 'site_id' );
+		$this->_sSiteKey = $oConfig_->getGlobal( 'site_key' );
+
+		$sMerchantId = (int)$oConfig_->getGlobal( 'api_username' );
+		$sApiKey = $oEncryptor_->decrypt( $oConfig_->getGlobal( 'api_password' ) );
+		$bTestMode = !!$oConfig_->getGlobal( 'testmode' );
+		$this->_oClient = new \cardgate\api\Client( $sMerchantId, $sApiKey, $bTestMode );
+
+		$this->_oClient->setIp( self::_determineIp() );
+		@list( $sLanguage, $sCountry ) = explode( '_', $oLocaleResolver_->getLocale() );
+		if ( ! empty( $sLanguage ) ) {
+			$this->_oClient->setLanguage( $sLanguage );
+		}
+		$this->_oClient->version()->setPlatformName( 'PHP' );
+		$this->_oClient->version()->setPlatformVersion( phpversion() );
+		$this->_oClient->version()->setPluginName( 'Magento/cardgate-clientlib-php' );
+		$this->_oClient->version()->setPluginVersion( $oMetaData_->getVersion() . '/' . $oModuleList_->getOne( 'Cardgate_Payment' )['setup_version'] );
 	}
 
 	/**
-	 * Get Global-config site ID.
+	 * Magic function proxying all calls to the client lib instance.
+	 * @param string
+	 * @param array
+	 * @return mixed
+	 */
+	public function __call( $sMethod_, $aArgs_ ) {
+		if ( is_callable( array( $this->_oClient, $sMethod_ ) ) ) {
+			return call_user_func_array( array( $this->_oClient, $sMethod_ ), $aArgs_ );
+		} else {
+			throw new \Exception( "invalid call to {$sMethod_}" );
+		}
+	}
+
+	/**
+	 * Returns the configured site id.
+	 * @return int
 	 */
 	public function getSiteId() {
-		return $this->config->getGlobal( 'site_id' );
+		return $this->_iSiteId;
 	}
 
 	/**
-	 * Get RESTful API entry point.
+	 * Returns the configured site key.
+	 * @return string
 	 */
-	public function getUrl() {
-		if ( isset( $_SERVER['CGP_API_URL'] ) && $_SERVER['CGP_API_URL'] != '' ) {
-			return $_SERVER['CGP_API_URL'];
-		} else {
-			return parent::getUrl();
-		}
+	public function getSiteKey() {
+		return $this->_sSiteKey;
 	}
 
 	/**
-	 * Generate validation hash.
-	 * Returns generated MD5 hash.
+	 * Get the ip address of the client.
+	 * @return string
 	 */
-	public function generateHash( $testmode, $transactionId, $currency, $amount, $reference, $code ) {
-		$key = $this->_sKey;
-		return md5( ( $testmode ? 'TEST' : '' ) . "{$transactionId}{$currency}{$amount}{$reference}{$code}{$key}" );
-	}
-
-	/**
-	 * Validate given hash with generated hash.
-	 * Returns true if hash validates given values.
-	 */
-	public function validateHash( $hash, $testmode, $transactionId, $currency, $amount, $reference, $code ) {
-		$hash2 = $this->generateHash( $testmode, $transactionId, $currency, $amount, $reference, $code );
-		return ( $hash2 == $hash );
-	}
-
-	/**
-	 * Retrieve the Ip Address of the Customer for this payment.
-	 */
-	public static function determineIp() {
+	private static function _determineIp() {
 		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-			// check ip from share internet
-			$sIp = $_SERVER['HTTP_CLIENT_IP'];
+			return $_SERVER['HTTP_CLIENT_IP'];
 		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			// to check ip is pass from proxy
-			$sIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-			$sIp = $_SERVER['REMOTE_ADDR'];
+			return $_SERVER['REMOTE_ADDR'];
 		} else {
-			$sIp = '0.0.0.0';
+			return '0.0.0.0';
 		}
-		return $sIp;
-	}
-
-	/**
-	 * Convert Magento2 Address to CUROPayments Consumer.
-	 */
-	public static function convertAddressToConsumer( Address $address, $isShipping = false ) {
-		$prefix = ( $isShipping ? 'shipto_' : '' );
-		return [
-			$prefix . 'firstname' => $address->getFirstname(),
-			$prefix . 'lastname' => $address->getLastname(),
-			$prefix . 'company' => $address->getCompany(),
-			$prefix . 'address' => implode( PHP_EOL, $address->getStreet() ),
-			$prefix . 'city' => $address->getCity(),
-			$prefix . 'state' => $address->getRegion(),
-			$prefix . 'zipcode' => $address->getPostcode(),
-			$prefix . 'country_id' => $address->getCountryId(),
-			$prefix . 'phone' => $address->getTelephone(),
-			$prefix . 'email' => $address->getEmail()
-		];
 	}
 
 }

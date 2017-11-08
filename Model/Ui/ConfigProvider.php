@@ -6,104 +6,62 @@
  */
 namespace Cardgate\Payment\Model\Ui;
 
-use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Framework\Escaper;
-use Magento\Payment\Helper\Data as PaymentHelper;
-use Cardgate\Payment\Model\Config\Master as MasterConfig;
-use Cardgate\Payment\Model\Config;
-use Cardgate\Payment\Model\GatewayClient;
-use Magento\Framework\App\ObjectManager;
+use \Magento\Framework\App\ObjectManager;
 
 /**
  * UI Config provider.
  */
-class ConfigProvider implements ConfigProviderInterface {
+class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface {
 
 	/**
-	 * @var \Magento\Framework\App\Cache\Type\Collection
+	 * @return array
 	 */
-	private $cache;
-
-	/**
-	 * @var Config
-	 */
-	protected $config;
-
-	/**
-	 * @var Escaper
-	 */
-	protected $escaper;
-
-	/**
-	 * @var MasterConfig
-	 */
-	private $masterConfig;
-
-	/**
-	 * @var GatewayClient
-	 */
-	private $cardgateClient;
-
-	public function __construct( PaymentHelper $paymentHelper, Escaper $escaper, MasterConfig $masterConfig, Config $config, GatewayClient $cardgateClient, \Magento\Framework\App\Cache\Type\Collection $cache ) {
-		$this->escaper = $escaper;
-		$this->config = $config;
-		$this->cache = $cache;
-		$this->masterConfig = $masterConfig;
-		$this->cardgateClient = $cardgateClient;
-	}
-
 	public function getConfig() {
-		$session = ObjectManager::getInstance()->get( 'Magento\\Checkout\\Model\\Session' );
-
-		$config = [];
-		$config['payment'] = [];
-		$config['payment']['instructions'] = [];
-		// iDeal issuers are globally assigned to the UI config
-		$config['payment']['cardgate_ideal_issuers'] = $this->getIDealIssuers();
-
-		foreach ( $this->masterConfig->getPaymentMethods() as $method ) {
-			$methodClass = $this->masterConfig->getPMClassByCode( $method );
-			/**
-			 *
-			 * @var \Cardgate\Payment\Model\Total\FeeData $fee
-			 */
-			$fee = $this->masterConfig->getPMInstanceByCode( $method )->getFeeForQuote( $session->getQuote() );
-			$config['payment'][$method] = [
-				'renderer' => $methodClass::$renderer,
-				'cardgatefee' => $fee->getAmount(),
-				'cardgatefeetax' => $fee->getTaxAmount()
+		$oSession = ObjectManager::getInstance()->get( \Magento\Checkout\Model\Session::class );
+		$oMasterConfig = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\Config\Master::class );
+		$aConfig = [];
+		$aConfig['payment'] = [];
+		$aConfig['payment']['instructions'] = [];
+		// iDeal issuers are globally assigned to the UI config.
+		$aConfig['payment']['cardgate_ideal_issuers'] = $this->getIDealIssuers();
+		foreach ( $oMasterConfig->getPaymentMethods() as $sMethod ) {
+			$sMethodClass = $oMasterConfig->getPMClassByCode( $sMethod );
+			$oFee = $oMasterConfig->getPMInstanceByCode( $sMethod )->getFeeForQuote( $oSession->getQuote() );
+			$aConfig['payment'][$sMethod] = [
+				'renderer'       => $sMethodClass::$renderer,
+				'cardgatefee'    => $oFee->getAmount(),
+				'cardgatefeetax' => $oFee->getTaxAmount()
 			];
-			$config['payment']['instructions'][$method] = 'Test instructies';
+			$aConfig['payment']['instructions'][$sMethod] = 'Test instructies';
 		}
-		return $config;
+		return $aConfig;
 	}
 
 	/**
 	 * Get list of iDeal issuers.
 	 * Read from cache or fetch from CardGate if not cached.
+	 * @return array
 	 */
 	public function getIDealIssuers() {
-		$testmode = boolval( $this->cardgateClient->getTestmode() );
-		$cacheID = "cgIDealIssuers" . ( $testmode ? 'test' : 'live' );
-		if ( $this->cache->test( $cacheID ) !== false ) {
+		$oGatewayClient = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\GatewayClient::class );
+		$oCache = ObjectManager::getInstance()->get( \Magento\Framework\App\Cache\Type\Collection::class );
+		$sCacheKey = "cgIDealIssuers" . ( $oGatewayClient->getTestmode() ? 'test' : 'live' );
+		if ( $oCache->test( $sCacheKey ) !== FALSE ) {
 			try {
-				$issuers = unserialize( $this->cache->load( $cacheID ) );
-				if ( count( $issuers ) > 0 ) {
-					return $issuers;
+				$aIssuers = unserialize( $oCache->load( $sCacheKey ) );
+				if ( count( $aIssuers ) > 0 ) {
+					return $aIssuers;
 				}
-			} catch ( \Exception $e ) {
-				// ignore
-			}
+			} catch ( \Exception $e_ ) { /* ignore */ }
 		}
 		try {
-			$ideal = new \curopayments\api\Payment\Request\iDeal( $this->cardgateClient );
-			$issuers = $ideal->getIssuers()->getList();
-			$this->cache->save( serialize( $issuers ), $cacheID, [], 7200 );
-		} catch ( \Exception $e ) {
-			// YYY: Log error here
-			$issuers = [];
+			$aIssuers = $oGatewayClient->methods()->get( \cardgate\api\Method::IDEAL )->getIssuers();
+			$oCache->save( serialize( $aIssuers ), $sCacheKey, [], 7200 );
+		} catch ( \Exception $e_ ) {
+			// TODO log an error here
+			$aIssuers = [];
 		}
-		return $issuers;
+		return $aIssuers;
 	}
 
 }

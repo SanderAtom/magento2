@@ -6,46 +6,61 @@
  */
 namespace Cardgate\Payment\Controller\Adminhtml\Gateway;
 
-use Magento\Backend\App\Action;
-use Magento\Framework\Controller\ResultFactory;
-use Cardgate\Payment\Model\GatewayClient;
-use Cardgate\Payment\Model\Config;
-use Magento\Framework\App\ObjectManager;
+use \Magento\Framework\App\ObjectManager;
 
 /**
- * Fetch paymentmethods Adminhtml action.
+ * Test gateway connectivity Adminhtml action.
  */
-class FetchPM extends Action {
+class FetchPM extends \Magento\Backend\App\Action {
 
+	/**
+	 * @return \Magento\Framework\Controller\Result\Raw\Interceptor
+	 */
 	public function execute() {
-		$oConfig = ObjectManager::getInstance()->get( Config::class );
-		$oGatewayClient = ObjectManager::getInstance()->get( GatewayClient::class );
-
-		$aTestResult = [];
-		$aActivePMs = [];
-		try {
-			$oPMResult = $oGatewayClient->postRequest( 'options/' . $oGatewayClient->getSiteId() );
-			foreach ( $oPMResult->options as $sPMId => $oPMRecord ) {
-				$aActivePMs[] = [
-					'id'   => $oPMRecord->id,
-					'name' => $oPMRecord->name
+		$sFetchResult = "Fetching CardGate payment methods...\n";
+		$aMethods = self::_fetch( $sFetchResult );
+		if ( is_array( $aMethods ) ) {
+			$aActiveMethods = [];
+			foreach ( $aMethods as $oMethod ) {
+				$aActiveMethods[] = [
+					'id'   => $oMethod->getId(),
+					'name' => $oMethod->getName()
 				];
 			}
-			$aTestResult['pms'] = $aActivePMs;
-			$oConfig->setGlobal( 'active_pm', serialize( $aActivePMs ) );
-			$aTestResult['success'] = TRUE;
-		} catch ( \Exception $e_ ) {
-			$aTestResult['success'] = FALSE;
-			$aTestResult['message'] = $e_->getMessage();
+			$oConfig = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\Config::class );
+			$oConfig->setGlobal( 'active_pm', serialize( $aActiveMethods ) );
+			$sFetchResult .= "<span style=\"color:blue;font-weight:bold;\">Please go to \"Cache Management\" and refresh cache types.</span>\n";
 		}
-
-		$sResult = $this->resultFactory->create( ResultFactory::TYPE_RAW );
-		$sResult->setContents(
-			"<html><body><pre>After successful query; close this tab and <b><u>please flush CACHE</u></b> ('System' > 'Tools' > 'Cache Management')." .
-			( isset( $aTestResult['message'] ) ? "\n\n<b>Message : " . $aTestResult['message'] . '' : '' ) . "</b>\n\nNumber of active paymentmethods found : " . count( $aActivePMs ) .
-			"\n\nRaw Result :\n" . var_export( $aActivePMs, 1 )."</pre></body></html>"
-		);
+		$sResult = $this->resultFactory->create( \Magento\Framework\Controller\ResultFactory::TYPE_RAW );
+		$sResult->setContents( '<pre>' . $sFetchResult . "Completed.<pre>" );
 		return $sResult;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function _fetch( &$sResult_ ) {
+		$oGatewayClient = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\GatewayClient::class );
+		try {
+			$aMethods = $oGatewayClient->methods()->all( $oGatewayClient->getSiteId() );
+			$sResult_ .= 'Gateway request for site #' . $oGatewayClient->getSiteId() . " completed.\n";
+			if ( count( $aMethods ) > 0 ) {
+				$sResult_ .= "<span style=\"color:green;font-weight:bold;\">Found payment methods: ";
+				foreach ( $aMethods as $iIndex => $oMethod ) {
+					if ( $iIndex > 0 ) {
+						$sResult_ .= ', ';
+					}
+					$sResult_ .= $oMethod->getId();
+				}
+				$sResult_ .= ".</span>\n";
+			} else {
+				$sResult_ .= "<span style=\"color:red;font-weight:bold;\">No payment methods found.</span>\n";
+			}
+			return $aMethods;
+		} catch( \Exception $e_ ) {
+			$sResult_ .= "<span style=\"color:red;font-weight:bold;\">Error occurred: " . $e_->getMessage() . "</span>\n";
+			return FALSE;
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ class MandatoryField extends \Magento\Config\Block\System\Config\Form\Field {
 
 	protected function _renderValue( \Magento\Framework\Data\Form\Element\AbstractElement $oElement_ ) {
 		if ( empty( $oElement_->getValue() ) ) {
-			$oElement_->setComment( $oElement_->getComment() . '<span style="color:red;">' . __( 'Missing value' ) . '</span>' );
+			$oElement_->setComment( trim( $oElement_->getComment() . ' <span style="color:red;">' . __( 'Missing value' ) . '</span>' ) );
 		}
 		return parent::_renderValue( $oElement_ );
 	}
