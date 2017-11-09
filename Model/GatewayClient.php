@@ -45,6 +45,9 @@ class GatewayClient {
 		$sMerchantId = (int)$oConfig_->getGlobal( 'api_username' );
 		$sApiKey = $oEncryptor_->decrypt( $oConfig_->getGlobal( 'api_password' ) );
 		$bTestMode = !!$oConfig_->getGlobal( 'testmode' );
+		if ( ! class_exists( '\cardgate\api\Client' ) ) {
+			throw new \Exception( "cardgate client library not installed" );
+		}
 		$this->_oClient = new \cardgate\api\Client( $sMerchantId, $sApiKey, $bTestMode );
 
 		$this->_oClient->setIp( self::_determineIp() );
