@@ -6,9 +6,15 @@
  */
 ?>
 <dl class="payment-method purchase order">
-	<dt class="title"><?php echo $block->escapeHtml($block->getMethod()->getTitle()) ?> by CURO Payments</dt>
-	<dd class="content">
-		<strong><?php echo $block->escapeHtml(__('Transaction ID')) ?></strong>
-		<span class="number"><?php echo $block->escapeHtml($block->getInfo()->getCardgateTransaction()) ?></span>
-	</dd>
+	<dt class="title"><?php echo $block->escapeHtml( $block->getMethod()->getTitle() ) ?> by <a href="https://www.cardgate.com/">CardGate</dt>
+<?php
+	// NOTE when the order is mailed the transaction has not yet been registered and there's nu cardgate transaction
+	// id yet. When the invoice is sent, there is, so it gets included.
+	$sTransactionId = $block->getInfo()->getCardgateTransaction();
+	if ( ! empty( $sTransactionId ) ) {
+?>
+	<dd class="content"><strong><?php echo $block->escapeHtml( __( 'Transaction ID' ) ) ?></strong> <?php echo $block->escapeHtml( $sTransactionId ) ?></dd>
+<?php
+	}
+?>
 </dl>

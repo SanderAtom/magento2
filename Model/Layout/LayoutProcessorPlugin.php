@@ -17,7 +17,7 @@ class LayoutProcessorPlugin {
 	/**
 	 * @var Master $_masterConfig
 	 */
-	private $_masterConfig = null;
+	private $_masterConfig = NULL;
 
 	public function __construct( Master $masterConfig ) {
 		$this->_masterConfig = $masterConfig;
@@ -35,7 +35,7 @@ class LayoutProcessorPlugin {
 		];
 		foreach ( $this->_masterConfig->getPaymentMethods() as $paymentMethod ) {
 			$arr['methods'][$paymentMethod] = [
-				'isBillingAddressRequired' => true
+				'isBillingAddressRequired' => TRUE
 			];
 		}
 		$data['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['renders']['children']['cardgate'] = $arr;

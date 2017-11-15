@@ -37,7 +37,7 @@ class Config implements ConfigInterface {
 	/**
 	 * Retrieve information from CardGate configuration for given paymentmethod.
 	 */
-	public function getField( $method, $field, $storeId = null ) {
+	public function getField( $method, $field, $storeId = NULL ) {
 		return $this->_scopeConfig->getValue( 'payment/' . $method . '/' . $field, ScopeInterface::SCOPE_STORE, $storeId );
 	}
 
@@ -45,7 +45,7 @@ class Config implements ConfigInterface {
 	 * Set information info CardGate configuration for given paymentmethod and
 	 * save configuration.
 	 */
-	public function setField( $method, $field, $value, $storeId = null ) {
+	public function setField( $method, $field, $value, $storeId = NULL ) {
 		$this->_scopeConfig->setValue( 'payment/' . $method . '/' . $field, $value, ScopeInterface::SCOPE_STORE, $storeId );
 		$this->_configResource->saveConfig( 'payment/' . $method . '/' . $field, $value, MutableScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0 );
 	}
@@ -53,14 +53,14 @@ class Config implements ConfigInterface {
 	/**
 	 * Retrieve information from Global CardGate configuration.
 	 */
-	public function getGlobal( $field, $storeId = null ) {
+	public function getGlobal( $field, $storeId = NULL ) {
 		return $this->_scopeConfig->getValue( 'cardgate/global/' . $field, ScopeInterface::SCOPE_STORE, $storeId );
 	}
 
 	/**
 	 * Set information info Global CardGate configuration and save configuration.
 	 */
-	public function setGlobal( $field, $value, $storeId = null ) {
+	public function setGlobal( $field, $value, $storeId = NULL ) {
 		$this->_scopeConfig->setValue( 'cardgate/global/' . $field, $value, ScopeInterface::SCOPE_STORE, $storeId );
 		$this->_configResource->saveConfig( 'cardgate/global/' . $field, $value, MutableScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0 );
 	}
@@ -88,7 +88,7 @@ class Config implements ConfigInterface {
 	 * Sets method code.
 	 */
 	public function setMethodCode($methodCode) {
-		return null;
+		return NULL;
 		//$this->_methodCode = $methodCode;
 	}
 
@@ -96,15 +96,15 @@ class Config implements ConfigInterface {
 	 * Sets path pattern.
 	 */
 	public function setPathPattern($pathPattern) {
-		return null;
+		return NULL;
 		//$this->pathPattern = $pathPattern;
 	}
 
 	/**
 	 * Retrieve information from payment configuration.
 	 */
-	public function getValue( $field, $storeId = null ) {
-		return null;
+	public function getValue( $field, $storeId = NULL ) {
+		return NULL;
 		//return $this->_scopeConfig->getValue( sprintf( $this->_pathPattern, $this->_methodCode, $field ), ScopeInterface::SCOPE_STORE, $storeId );
 	}
 

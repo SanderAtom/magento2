@@ -27,14 +27,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Incl Tax'
 			],
 			'base_cardgatefee_incl_tax' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Incl Tax'
 			],
 
@@ -42,14 +42,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Amount'
 			],
 			'base_cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Tax Amount'
 			],
 
@@ -57,14 +57,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Amount'
 			],
 			'cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Tax Amount'
 			]
 		];
@@ -81,14 +81,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Incl Tax'
 			],
 			'base_cardgatefee_incl_tax' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Incl Tax'
 			],
 
@@ -96,42 +96,42 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Amount'
 			],
 			'base_cardgatefee_cancelled' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Cancelled'
 			],
 			'base_cardgatefee_invoiced' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Invoiced'
 			],
 			'base_cardgatefee_refunded' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Refunded'
 			],
 			'base_cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Tax Amount'
 			],
 			'base_cardgatefee_tax_refunded' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Tax Refunded'
 			],
 
@@ -139,42 +139,42 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Amount'
 			],
 			'cardgatefee_cancelled' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Cancelled'
 			],
 			'cardgatefee_invoiced' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Invoiced'
 			],
 			'cardgatefee_refunded' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Refunded'
 			],
 			'cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Tax Amount'
 			],
 			'cardgatefee_tax_refunded' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Tax Refunded'
 			]
 		];
@@ -191,14 +191,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Incl Tax'
 			],
 			'base_cardgatefee_incl_tax' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Incl Tax'
 			],
 
@@ -206,14 +206,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Excl Tax Amount'
 			],
 			'base_cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'Base CardGate Fee Tax Amount'
 			],
 
@@ -221,14 +221,14 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Excl Tax Amount'
 			],
 			'cardgatefee_tax_amount' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
 				'length' => '12,4',
 				'default' => '0.0000',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate Fee Tax Amount'
 			]
 		];
@@ -245,26 +245,26 @@ class InstallSchema implements InstallSchemaInterface {
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
 				'length' => 64,
 				'default' => '',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate PaymentMethod'
 			],
 			'cardgate_transaction' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
 				'length' => 64,
 				'default' => '',
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate TransactionID'
 			],
 			'cardgate_status' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
 				'default' => 0,
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate StatusCode'
 			],
 			'cardgate_testmode' => [
 				'type' => \Magento\Framework\DB\Ddl\Table::TYPE_BOOLEAN,
 				'default' => 0,
-				'nullable' => true,
+				'nullable' => TRUE,
 				'comment' => 'CardGate TestMode'
 			]
 		];

@@ -19,7 +19,7 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 
 	const CODE_FEE = 'cardgatefee';
 
-	protected $quoteValidator = null;
+	protected $quoteValidator = NULL;
 
 	protected $_cardgateConfig;
 

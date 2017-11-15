@@ -13,7 +13,7 @@ use Magento\Framework\App\Config\Initial;
  */
 class InitialPlugin {
 
-	private $_masterConfig = null;
+	private $_masterConfig = NULL;
 
 	public function __construct( Master $masterConfig ) {
 		$this->_masterConfig = $masterConfig;
@@ -24,7 +24,7 @@ class InitialPlugin {
 	 */
 	public function aroundGetData( Initial $initialConfig, \Closure $proceed, $scope ) {
 		$data = $proceed( $scope );
-		foreach ( $this->_masterConfig->getPaymentMethods( true ) as $paymentMethod => $paymentMethodName ) {
+		foreach ( $this->_masterConfig->getPaymentMethods( TRUE ) as $paymentMethod => $paymentMethodName ) {
 			$data['payment'][$paymentMethod] = [
 				'model' => $this->_masterConfig->getPMClassByCode( $paymentMethod ),
 				'label' => $paymentMethod,

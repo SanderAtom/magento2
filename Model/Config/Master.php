@@ -41,7 +41,7 @@ class Master {
 	public function __construct( \Magento\Framework\App\Cache\Type\Collection $cache, \Magento\Framework\Filesystem $filesystem ) {
 		$this->cache = $cache;
 		$this->filesystem = $filesystem;
-		if ( $this->cache->test( self::CACHEKEY ) !== false ) {
+		if ( $this->cache->test( self::CACHEKEY ) !== FALSE ) {
 			try {
 				$cachedPMs = unserialize( $this->cache->load( self::CACHEKEY ) );
 			} catch ( \Exception $e ) {
@@ -70,7 +70,7 @@ class Master {
 	/**
 	 * Get Paymentmethod classname by Code.
 	 */
-	public function getPMClassByCode( $paymentMethodCode, $fullClassName = true ) {
+	public function getPMClassByCode( $paymentMethodCode, $fullClassName = TRUE ) {
 		return ( $fullClassName ? 'Cardgate\\Payment\\Model\\PaymentMethod\\' : '' ) . substr( $paymentMethodCode, 9 );
 	}
 
@@ -78,7 +78,7 @@ class Master {
 	 * Get Paymentmethod instance by Code.
 	 * $force can be set to ensure class exists (or create it if not exists).
 	 */
-	public function getPMInstanceByCode( $paymentMethodCode, $force = false ) {
+	public function getPMInstanceByCode( $paymentMethodCode, $force = FALSE ) {
 		if ( $force ) {
 			$this->ensurePaymentClass( $paymentMethodCode );
 		}
@@ -114,7 +114,7 @@ class Master {
 			/** @var \Magento\Framework\Filesystem\Directory\Write $directory */
 			$directory = $this->filesystem->getDirectoryWrite( DirectoryList::TMP );
 			if ( ! $directory->isFile( 'paymentmethod_' . $paymentMethodCode ) ) {
-				$directory->writeFile( 'paymentmethod_' . $paymentMethodCode, "<?php namespace Cardgate\\Payment\\Model\\PaymentMethod; class " . $this->getPMClassByCode( $paymentMethodCode, false ) . " extends \\Cardgate\\Payment\\Model\\PaymentMethod\\nonexistent {}" );
+				$directory->writeFile( 'paymentmethod_' . $paymentMethodCode, "<?php namespace Cardgate\\Payment\\Model\\PaymentMethod; class " . $this->getPMClassByCode( $paymentMethodCode, FALSE ) . " extends \\Cardgate\\Payment\\Model\\PaymentMethod\\nonexistent {}" );
 			}
 			include $directory->getAbsolutePath( 'paymentmethod_' . $paymentMethodCode );
 		}
@@ -155,7 +155,7 @@ class Master {
 		return $this->paymentMethodIds;
 	}
 
-	public function getPaymentMethods( $bIncludingNames = false ) {
+	public function getPaymentMethods( $bIncludingNames = FALSE ) {
 		if ( $bIncludingNames ) {
 			return $this->paymentMethodCodes;
 		} else {

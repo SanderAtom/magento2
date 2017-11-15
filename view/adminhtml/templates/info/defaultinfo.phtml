@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright © 2016 CardGate.
+ * Copyright (c) 2017 CardGate B.V.
  * All rights reserved.
- * See LICENSE.txt for license details.
+ * See LICENSE for license details.
  */
 ?>
 <dl class="payment-method purchase order">
-	<dt class="title"><?php echo $block->escapeHtml($block->getMethod()->getTitle()) ?> by CURO Payments</dt>
-	<dd class="content">
-		<strong><?php echo $block->escapeHtml(__('Transaction ID')) ?></strong>
-		<span class="number"><?php echo $block->escapeHtml($block->getInfo()->getCardgateTransaction()) ?></span>
-	</dd>
+	<dt class="title"><?php echo $block->escapeHtml( $block->getMethod()->getTitle() ) ?> by CardGate</dt>
+	<dd class="content"><strong><?php echo $block->escapeHtml( __( 'Transaction ID' ) ) ?></strong> <?php echo $block->escapeHtml( $block->getInfo()->getCardgateTransaction() ) ?></dd>
 </dl>
-

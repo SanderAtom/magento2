@@ -31,7 +31,7 @@ class FeeData {
 	 */
 	protected $fee_includes_tax;
 
-	function __construct( $amount = 0, $tax_amount = 0, $tax_class = null, $fee_includes_tax = true ) {
+	function __construct( $amount = 0, $tax_amount = 0, $tax_class = NULL, $fee_includes_tax = TRUE ) {
 		$this->amount = $amount;
 		$this->tax_amount = $tax_amount;
 		$this->tax_class = $tax_class;
