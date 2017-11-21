@@ -6,10 +6,6 @@
  */
 namespace Cardgate\Payment\Helper;
 
-use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Order\Creditmemo;
-use Magento\Tax\Api\Data\OrderTaxDetailsItemInterface;
-
 /**
  * Taxdata-helper plugin to add CardGate fee tax to invoices
  */
@@ -17,86 +13,97 @@ class TaxData extends \Magento\Tax\Helper\Data {
 
 	/**
 	 * Add CardGate fee when calculating taxes for invoices.
-	 * @param \Magento\Tax\Helper\Data $taxData
-	 * @param \Closure $proceed
-	 * @param \Magento\Sales\Model\Order|\Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $source
+	 * @param \Magento\Tax\Helper\Data
+	 * @param \Closure
+	 * @param mixed \Magento\Sales\Model\Order or \Magento\Sales\Model\Order\Invoice or \Magento\Sales\Model\Order\Creditmemo
 	 * @return array
 	 */
-	public function aroundGetCalculatedTaxes( \Magento\Tax\Helper\Data $taxData, \Closure $proceed, $source ) {
-		$taxClassAmount = [];
-		if ( empty( $source ) ) {
-			return $taxClassAmount;
+	public function aroundGetCalculatedTaxes( \Magento\Tax\Helper\Data $aTaxData_, \Closure $oProceed_, $oSource_ ) {
+		$aTaxClassAmount = [];
+		if ( empty( $oSource_ ) ) {
+			return $aTaxClassAmount;
 		}
-		$current = $source;
-		// YYY: Creditmemo is not finished yet
-		if ( $source instanceof Invoice || $source instanceof Creditmemo ) {
-			$source = $current->getOrder();
-		}
-		if ( $current == $source ) {
-			$taxClassAmount = $this->calculateTaxForOrder( $current );
-		} else {
-			$taxClassAmount = $this->calculateTaxForItems( $source, $current );
+		$oCurrent = $oSource_;
 
-			// Apply any taxes for cardgatefee
-			$cardgatefeeTaxAmount = $source->getCardgatefeeTaxAmount();
-			$originalCardgatefeeTaxAmount = $current->getCardgatefeeTaxAmount();
-			if ( $cardgatefeeTaxAmount && $originalCardgatefeeTaxAmount && $cardgatefeeTaxAmount != 0 && floatval( $originalCardgatefeeTaxAmount ) ) {
-				$orderTaxDetails = $this->orderTaxManagement->getOrderTaxDetails( $source->getId() );
+		if (
+			$oSource_ instanceof \Magento\Sales\Model\Order\Invoice
+			|| $oSource_ instanceof \Magento\Sales\Model\Order\Creditmemo
+		) {
+			$oSource_ = $oCurrent->getOrder();
+		}
+		if ( $oCurrent == $oSource_ ) {
+			$aTaxClassAmount = $this->calculateTaxForOrder( $oCurrent );
+		} else {
+			$aTaxClassAmount = $this->calculateTaxForItems( $oSource_, $oCurrent );
+
+			// Apply any taxes for cardgatefee.
+			$fCardgatefeeTaxAmount = $source->getCardgatefeeTaxAmount();
+			$fOriginalCardgatefeeTaxAmount = $current->getCardgatefeeTaxAmount();
+			if (
+				$fCardgatefeeTaxAmount
+				&& $fOriginalCardgatefeeTaxAmount
+				&& $fCardgatefeeTaxAmount != 0
+				&& floatval( $fOriginalCardgatefeeTaxAmount )
+			) {
+				$oOrderTaxDetails = $this->orderTaxManagement->getOrderTaxDetails( $source->getId() );
 
 				// An invoice or credit memo can have a different qty than its
 				// order
-				$cardgatefeeRatio = $cardgatefeeTaxAmount / $originalCardgatefeeTaxAmount;
-				$itemTaxDetails = $orderTaxDetails->getItems();
-				foreach ( $itemTaxDetails as $itemTaxDetail ) {
+				$fCardgatefeeRatio = $fCardgatefeeTaxAmount / $fOriginalCardgatefeeTaxAmount;
+				$aItemTaxDetails = $oOrderTaxDetails->getItems();
+				foreach ( $aItemTaxDetails as $oItemTaxDetail ) {
 
 					// Aggregate taxable items associated with shipping
-					if ( $itemTaxDetail->getType() == \Cardgate\Payment\Model\Total\Fee::TYPE_FEE ) {
-						$taxClassAmount = $this->__aggregateTaxes( $taxClassAmount, $itemTaxDetail, $cardgatefeeRatio );
+					if ( $oItemTaxDetail->getType() == \Cardgate\Payment\Model\Total\Fee::TYPE_FEE ) {
+						$aTaxClassAmount = $this->_aggregateTaxes( $aTaxClassAmount, $oItemTaxDetail, $fCardgatefeeRatio );
 					}
 				}
 			}
 
 		}
 
-		foreach ( $taxClassAmount as $key => $tax ) {
-			$taxClassAmount[$key]['tax_amount'] = $this->priceCurrency->round( $tax['tax_amount'] );
-			$taxClassAmount[$key]['base_tax_amount'] = $this->priceCurrency->round( $tax['base_tax_amount'] );
+		foreach( $aTaxClassAmount as $sKey => $aTax ) {
+			$aTaxClassAmount[$sKey]['tax_amount'] = $this->priceCurrency->round( $aTax['tax_amount'] );
+			$aTaxClassAmount[$sKey]['base_tax_amount'] = $this->priceCurrency->round( $aTax['base_tax_amount'] );
 		}
 
-		return array_values( $taxClassAmount );
+		return array_values( $aTaxClassAmount );
 	}
 
 	/**
 	 * Copied from \Magento\Tax\Helper\Data because it's private there.
 	 * Accumulates the pre-calculated taxes for each tax class.
 	 * @param array $taxClassAmount
-	 * @param OrderTaxDetailsItemInterface $itemTaxDetail
+	 * @param \Magento\Tax\Api\Data\OrderTaxDetailsItemInterface $itemTaxDetail
 	 * @param float $ratio
 	 * @return array
 	 */
-	private function __aggregateTaxes( $taxClassAmount, OrderTaxDetailsItemInterface $itemTaxDetail, $ratio ) {
-		$itemAppliedTaxes = $itemTaxDetail->getAppliedTaxes();
-		foreach ( $itemAppliedTaxes as $itemAppliedTax ) {
-			$taxAmount = $itemAppliedTax->getAmount() * $ratio;
-			$baseTaxAmount = $itemAppliedTax->getBaseAmount() * $ratio;
+	private function _aggregateTaxes( $aTaxClassAmount_, \Magento\Tax\Api\Data\OrderTaxDetailsItemInterface $oItemTaxDetail_, $fRatio_ ) {
+		$aItemAppliedTaxes = $oItemTaxDetail_->getAppliedTaxes();
+		foreach ( $aItemAppliedTaxes as $oItemAppliedTax ) {
+			$fTaxAmount = $oItemAppliedTax->getAmount() * $fRatio_;
+			$fBaseTaxAmount = $oItemAppliedTax->getBaseAmount() * $fRatio_;
 
-			if ( 0 == $taxAmount && 0 == $baseTaxAmount ) {
+			if (
+				0 == $fTaxAmount
+				&& 0 == $fBaseTaxAmount
+			) {
 				continue;
 			}
-			$taxCode = $itemAppliedTax->getCode();
+			$sTaxCode = $oItemAppliedTax->getCode();
 
-			if ( ! isset( $taxClassAmount[$taxCode] ) ) {
-				$taxClassAmount[$taxCode]['title'] = $itemAppliedTax->getTitle();
-				$taxClassAmount[$taxCode]['percent'] = $itemAppliedTax->getPercent();
-				$taxClassAmount[$taxCode]['tax_amount'] = $taxAmount;
-				$taxClassAmount[$taxCode]['base_tax_amount'] = $baseTaxAmount;
+			if ( ! isset( $aTaxClassAmount_[$sTaxCode] ) ) {
+				$sTaxCode[$sTaxCode]['title'] = $oItemAppliedTax->getTitle();
+				$sTaxCode[$sTaxCode]['percent'] = $oItemAppliedTax->getPercent();
+				$sTaxCode[$sTaxCode]['tax_amount'] = $fTaxAmount;
+				$sTaxCode[$sTaxCode]['base_tax_amount'] = $fBaseTaxAmount;
 			} else {
-				$taxClassAmount[$taxCode]['tax_amount'] += $taxAmount;
-				$taxClassAmount[$taxCode]['base_tax_amount'] += $baseTaxAmount;
+				$sTaxCode[$sTaxCode]['tax_amount'] += $fTaxAmount;
+				$sTaxCode[$sTaxCode]['base_tax_amount'] += $fBaseTaxAmount;
 			}
 		}
 
-		return $taxClassAmount;
+		return $aTaxClassAmount_;
 	}
 
 }
