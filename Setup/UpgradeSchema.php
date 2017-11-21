@@ -6,19 +6,14 @@
  */
 namespace Cardgate\Payment\Setup;
 
-use Magento\Framework\Setup\UpgradeSchemaInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
-use Magento\Framework\Setup\SchemaSetupInterface;
-
 /**
- * Upgrade Schema class.
- * Executed every time this module is upgraded.
+ * Upgrade schema class, executed every time this module is upgraded.
  */
-class UpgradeSchema implements UpgradeSchemaInterface {
+class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface {
 
-	public function upgrade( SchemaSetupInterface $setup, ModuleContextInterface $context ) {
-		$setup->startSetup();
-		$setup->endSetup();
+	public function upgrade( \Magento\Framework\Setup\SchemaSetupInterface $oSetup_, \Magento\Framework\Setup\ModuleContextInterface $oContext_ ) {
+		$oSetup_->startSetup();
+		$oSetup_->endSetup();
 	}
 
 }

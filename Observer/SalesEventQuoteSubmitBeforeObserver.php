@@ -6,24 +6,21 @@
  */
 namespace Cardgate\Payment\Observer;
 
-use Magento\Framework\Event\Observer;
-use Magento\Payment\Observer\AbstractDataAssignObserver;
-
 /**
- * Event to copy CardGate Fee data from a quote to an order.
+ * Event to copy CardGate fee data from a quote to an order.
  */
-class SalesEventQuoteSubmitBeforeObserver extends AbstractDataAssignObserver {
+class SalesEventQuoteSubmitBeforeObserver extends \Magento\Payment\Observer\AbstractDataAssignObserver {
 
-	public function execute( \Magento\Framework\Event\Observer $observer ) {
-		$quote = $observer->getEvent()->getQuote();
-		$order = $observer->getEvent()->getOrder();
+	public function execute( \Magento\Framework\Event\Observer $oObserver_ ) {
+		$oQuote = $oObserver_->getEvent()->getQuote();
+		$oOrder = $oObserver_->getEvent()->getOrder();
 
-		$order->setCardgatefeeAmount( $quote->getCardgatefeeAmount() );
-		$order->setBaseCardgatefeeAmount( $quote->getBaseCardgatefeeAmount() );
-		$order->setCardgatefeeTaxAmount( $quote->getCardgatefeeTaxAmount() );
-		$order->setBaseCardgatefeeTaxAmount( $quote->getBaseCardgatefeeTaxAmount() );
-		$order->setCardgatefeeInclTax( $quote->getCardgatefeeInclTax() );
-		$order->setBaseCardgatefeeInclTax( $quote->getBaseCardgatefeeInclTax() );
+		$oOrder->setCardgatefeeAmount( $oQuote->getCardgatefeeAmount() );
+		$oOrder->setBaseCardgatefeeAmount( $oQuote->getBaseCardgatefeeAmount() );
+		$oOrder->setCardgatefeeTaxAmount( $oQuote->getCardgatefeeTaxAmount() );
+		$oOrder->setBaseCardgatefeeTaxAmount( $oQuote->getBaseCardgatefeeTaxAmount() );
+		$oOrder->setCardgatefeeInclTax( $oQuote->getCardgatefeeInclTax() );
+		$oOrder->setBaseCardgatefeeInclTax( $oQuote->getBaseCardgatefeeInclTax() );
 
 		return $this;
 	}

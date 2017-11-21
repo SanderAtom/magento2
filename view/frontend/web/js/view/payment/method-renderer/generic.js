@@ -11,27 +11,30 @@ define(
 		'Magento_Checkout/js/model/quote',
 		'mage/url'
 	],
-	function (Component,
-			selectPaymentMethodAction,
-			checkoutData,
-			quote,
-			url) {
+	function(
+		Component,
+		selectPaymentMethodAction,
+		checkoutData,
+		quote,
+		url
+	) {
 		'use strict';
 
-		return Component.extend({
+		return Component.extend( {
 
 			redirectAfterPlaceOrder: false,
 
 			defaults: {
-				template: 'Cardgate_Payment/payment/form',
+				template: 'Cardgate_Payment/payment/generic',
 				transactionResult: ''
 			},
 
 			initObservable: function () {
 				this._super()
-					.observe([
+					.observe( [
 						'transactionResult'
-					]);
+					] )
+				;
 				return this;
 			},
 
@@ -39,11 +42,11 @@ define(
 				return this.item.method;
 			},
 
-			getImageSrc: function(type) {
+			getImageSrc: function( type ) {
 				if ( type == "small" ) {
-					return "https://cdn.curopayments.net/thumb/100/20/paymentmethods/" + this.item.method.substring(9) + ".png";
+					return "https://cdn.curopayments.net/thumb/100/20/paymentmethods/" + this.item.method.substring( 9 ) + ".png";
 				} else {
-					return "https://cdn.curopayments.net/thumb/300/75/paymentmethods/" + this.item.method.substring(9) + ".png";
+					return "https://cdn.curopayments.net/thumb/300/75/paymentmethods/" + this.item.method.substring( 9 ) + ".png";
 				}
 			},
 
@@ -58,9 +61,9 @@ define(
 			},
 
 			afterPlaceOrder: function() {
-				window.location.replace(url.build('cardgate/payment/start/'));
+				window.location.replace( url.build( 'cardgate/payment/start/' ) );
 			}
 
-		});
+		} );
 	}
 );

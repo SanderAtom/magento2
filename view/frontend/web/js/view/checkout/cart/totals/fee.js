@@ -7,17 +7,13 @@ define(
 	[
 		'Cardgate_Payment/js/view/checkout/summary/fee'
 	],
-	function (Component) {
+	function( Component ) {
 		'use strict';
 
-		return Component.extend({
-
-			/**
-			 * @override
-			 */
+		return Component.extend( {
 			isDisplayed: function () {
 				return true;
 			}
-		});
+		} );
 	}
 );

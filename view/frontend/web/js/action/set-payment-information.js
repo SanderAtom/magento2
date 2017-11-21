@@ -14,10 +14,19 @@ define(
 		'Magento_Checkout/js/model/full-screen-loader',
 		'Magento_Checkout/js/model/resource-url-manager'
 	],
-	function (quote, urlBuilder, storage, errorProcessor, customer, getTotalsAction, fullScreenLoader, resourceUrlManager) {
+	function(
+		quote,
+		urlBuilder,
+		storage,
+		errorProcessor,
+		customer,
+		getTotalsAction,
+		fullScreenLoader,
+		resourceUrlManager
+	) {
 		'use strict';
 
-		return function (messageContainer, paymentData) {
+		return function( messageContainer, paymentData ) {
 			fullScreenLoader.startLoader();
 			return storage.get( urlBuilder.build( 'cardgate/payment/updatepm?pm=' + paymentData.method ) )
 				.fail(
@@ -33,50 +42,6 @@ define(
 					}
 				)
 			;
-
-
-/*
-			var serviceUrl,
-				payload;
-
-			// Checkout for guest and registered customer.
-			if (!customer.isLoggedIn()) {
-				serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/set-payment-information', {
-					cartId: quote.getQuoteId()
-				});
-				payload = {
-					cartId: quote.getQuoteId(),
-					email: quote.guestEmail,
-					paymentMethod: paymentData,
-					billingAddress: quote.billingAddress()
-				};
-			} else {
-				serviceUrl = urlBuilder.createUrl('/carts/mine/set-payment-information', {});
-				payload = {
-					cartId: quote.getQuoteId(),
-					paymentMethod: paymentData,
-					billingAddress: quote.billingAddress()
-				};
-			}
-
-			fullScreenLoader.startLoader();
-
-			return storage.post(
-				serviceUrl, JSON.stringify(payload)
-			).fail(
-				function (response) {
-					errorProcessor.process(response, messageContainer);
-				}
-			).done(
-				function () {
-					getTotalsAction([]);
-				}
-			).always(
-				function () {
-					fullScreenLoader.stopLoader();
-				}
-			);
-*/
 		};
 	}
 );

@@ -8,7 +8,7 @@
 <dl class="payment-method purchase order">
 	<dt class="title"><?php echo $block->escapeHtml( $block->getMethod()->getTitle() ) ?> by <a href="https://www.cardgate.com/">CardGate</dt>
 <?php
-	// NOTE when the order is mailed the transaction has not yet been registered and there's nu cardgate transaction
+	// NOTE when the order is mailed the transaction has not yet been registered and there's no cardgate transaction
 	// id yet. When the invoice is sent, there is, so it gets included.
 	$sTransactionId = $block->getInfo()->getCardgateTransaction();
 	if ( ! empty( $sTransactionId ) ) {

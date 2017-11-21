@@ -11,16 +11,12 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Tax\Api\Data\OrderTaxDetailsItemInterface;
 
 /**
- * Taxdata-helper plugin to add CardGate Fee tax to invoices
- *
- * @author DBS B.V.
- * @package Magento2
+ * Taxdata-helper plugin to add CardGate fee tax to invoices
  */
 class TaxData extends \Magento\Tax\Helper\Data {
 
 	/**
-	 * Add CardGate fee when calculating taxes for invoices
-	 *
+	 * Add CardGate fee when calculating taxes for invoices.
 	 * @param \Magento\Tax\Helper\Data $taxData
 	 * @param \Closure $proceed
 	 * @param \Magento\Sales\Model\Order|\Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $source
@@ -71,19 +67,8 @@ class TaxData extends \Magento\Tax\Helper\Data {
 	}
 
 	/**
-	 * Copied from \Magento\Tax\Helper\Data because it's private there...
-	 *
-	 * Accumulates the pre-calculated taxes for each tax class
-	 * This method accepts and returns the 'taxClassAmount' array with format:
-	 * array(
-	 * $index => array(
-	 * 'tax_amount' => $taxAmount,
-	 * 'base_tax_amount' => $baseTaxAmount,
-	 * 'title' => $title,
-	 * 'percent' => $percent
-	 * )
-	 * )
-	 *
+	 * Copied from \Magento\Tax\Helper\Data because it's private there.
+	 * Accumulates the pre-calculated taxes for each tax class.
 	 * @param array $taxClassAmount
 	 * @param OrderTaxDetailsItemInterface $itemTaxDetail
 	 * @param float $ratio

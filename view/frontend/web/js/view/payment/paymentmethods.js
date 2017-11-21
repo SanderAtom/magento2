@@ -18,14 +18,13 @@ define(
 				i.substr( 0, 9 ) == "cardgate_" &&
 				window.checkoutConfig.payment[i] != undefined
 			) {
-				rendererList.push({
-						type: i,
-						component: 'Cardgate_Payment/js/view/payment/method-renderer/' + window.checkoutConfig.payment[i].renderer
-					}
-				);
+				rendererList.push( {
+					type: i,
+					component: 'Cardgate_Payment/js/view/payment/method-renderer/' + window.checkoutConfig.payment[i].renderer
+				} );
 			}
 		}
-		/** Add view logic here if needed */
+
 		return Component.extend({});
 	}
 );

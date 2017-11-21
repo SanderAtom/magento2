@@ -6,24 +6,21 @@
  */
 namespace Cardgate\Payment\Observer;
 
-use Magento\Framework\Event\Observer as EventObserver;
-use Magento\Framework\Event\ObserverInterface;
-
 /**
- * Event to copy CardGate Fee data from an order to an invoice.
+ * Event to copy CardGate fee data from an order to an invoice.
  */
-class SalesOrderInvoicePay implements ObserverInterface {
+class SalesOrderInvoicePay implements \Magento\Framework\Event\ObserverInterface {
 
-	public function execute( EventObserver $observer ) {
-		$invoice = $observer->getEvent()->getInvoice();
-		$order = $invoice->getOrder();
+	public function execute( \Magento\Framework\Event\Observer $oObserver_ ) {
+		$oInvoice = $oObserver_->getEvent()->getInvoice();
+		$oOrder = $oInvoice->getOrder();
 
-		$invoice->setCardgatefeeAmount( $order->getCardgatefeeAmount() );
-		$invoice->setBaseCardgatefeeAmount( $order->getBaseCardgatefeeAmount() );
-		$invoice->setCardgatefeeTaxAmount( $order->getCardgatefeeTaxAmount() );
-		$invoice->setBaseCardgatefeeTaxAmount( $order->getBaseCardgatefeeTaxAmount() );
-		$invoice->setCardgatefeeInclTax( $order->getCardgatefeeInclTax() );
-		$invoice->setBaseCardgatefeeInclTax( $order->getBaseCardgatefeeInclTax() );
+		$oInvoice->setCardgatefeeAmount( $oOrder->getCardgatefeeAmount() );
+		$oInvoice->setBaseCardgatefeeAmount( $oOrder->getBaseCardgatefeeAmount() );
+		$oInvoice->setCardgatefeeTaxAmount( $oOrder->getCardgatefeeTaxAmount() );
+		$oInvoice->setBaseCardgatefeeTaxAmount( $oOrder->getBaseCardgatefeeTaxAmount() );
+		$oInvoice->setCardgatefeeInclTax( $oOrder->getCardgatefeeInclTax() );
+		$oInvoice->setBaseCardgatefeeInclTax( $oOrder->getBaseCardgatefeeInclTax() );
 
 		return $this;
 	}

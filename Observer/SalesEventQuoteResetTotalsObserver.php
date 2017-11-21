@@ -7,46 +7,46 @@
 namespace Cardgate\Payment\Observer;
 
 use Cardgate\Payment\Model\Total\Fee;
-use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector;
-use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Resets quote totals.
  */
-class SalesEventQuoteResetTotalsObserver implements ObserverInterface {
+class SalesEventQuoteResetTotalsObserver implements \Magento\Framework\Event\ObserverInterface {
 
-	public function execute( EventObserver $observer ) {
-		$quote = $observer->getEvent()->getQuote();
-		$quote->setCardgatefeeAmount( 0 );
-		$quote->setBaseCardgatefeeAmount( 0 );
-		$quote->setCardgatefeeTaxAmount( 0 );
-		$quote->setBaseCardgatefeeTaxAmount( 0 );
-		$quote->setCardgatefeeInclTax( 0 );
-		$quote->setBaseCardgatefeeInclTax( 0 );
+	public function execute( \Magento\Framework\Event\Observer $oObserver_ ) {
+		$oQuote = $oObserver_->getEvent()->getQuote();
+		$oQuote->setCardgatefeeAmount( 0 );
+		$oQuote->setBaseCardgatefeeAmount( 0 );
+		$oQuote->setCardgatefeeTaxAmount( 0 );
+		$oQuote->setBaseCardgatefeeTaxAmount( 0 );
+		$oQuote->setCardgatefeeInclTax( 0 );
+		$oQuote->setBaseCardgatefeeInclTax( 0 );
 
-		foreach ( $quote->getAllAddresses() as $address ) {
-			$associatedTaxables = $address->getAssociatedTaxables();
-			if ( ! $associatedTaxables ) {
+		foreach ( $oQuote->getAllAddresses() as $oAddress ) {
+			$aAssociatedTaxables = $oAddress->getAssociatedTaxables();
+			if ( ! $aAssociatedTaxables ) {
 				continue;
 			}
-			$newAssociatedTaxables = [];
-			foreach ( $associatedTaxables as $extraTaxable ) {
-				if ( $extraTaxable[CommonTaxCollector::KEY_ASSOCIATED_TAXABLE_TYPE] != Fee::TYPE_FEE &&
-						$extraTaxable[CommonTaxCollector::KEY_ASSOCIATED_TAXABLE_CODE] != Fee::CODE_FEE ) {
-					$newAssociatedTaxables[] = $extraTaxable;
+			$aNewAssociatedTaxables = [];
+			foreach ( $aAssociatedTaxables as $aExtraTaxable ) {
+				if (
+					$aExtraTaxable[CommonTaxCollector::KEY_ASSOCIATED_TAXABLE_TYPE] != Fee::TYPE_FEE
+					&& $aExtraTaxable[CommonTaxCollector::KEY_ASSOCIATED_TAXABLE_CODE] != Fee::CODE_FEE
+				) {
+					$aNewAssociatedTaxables[] = $aExtraTaxable;
 				}
 			}
-			$address->setAssociatedTaxables( $newAssociatedTaxables );
+			$oAddress->setAssociatedTaxables( $aNewAssociatedTaxables );
 		}
 
-		$payment = $quote->getPayment();
-		$payment->setCardgatefeeAmount( 0 );
-		$payment->setBaseCardgatefeeAmount( 0 );
-		$payment->setCardgatefeeTaxAmount( 0 );
-		$payment->setBaseCardgatefeeTaxAmount( 0 );
-		$payment->setCardgatefeeInclTax( 0 );
-		$payment->setBaseCardgatefeeInclTax( 0 );
+		$oPayment = $oQuote->getPayment();
+		$oPayment->setCardgatefeeAmount( 0 );
+		$oPayment->setBaseCardgatefeeAmount( 0 );
+		$oPayment->setCardgatefeeTaxAmount( 0 );
+		$oPayment->setBaseCardgatefeeTaxAmount( 0 );
+		$oPayment->setCardgatefeeInclTax( 0 );
+		$oPayment->setBaseCardgatefeeInclTax( 0 );
 
 		return $this;
 	}

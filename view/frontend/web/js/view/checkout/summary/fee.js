@@ -19,19 +19,19 @@ define(
 		'Magento_Checkout/js/model/resource-url-manager'
 	],
 	function (
-			Component,
-			$,
-			urlBuilder,
-			storage,
-			errorProcessor,
-			customer,
-			quote,
-			priceUtils,
-			totals,
-			fullScreenLoader,
-			setPaymentInformation,
-			resourceUrlManager
-		) {
+		Component,
+		$,
+		urlBuilder,
+		storage,
+		errorProcessor,
+		customer,
+		quote,
+		priceUtils,
+		totals,
+		fullScreenLoader,
+		setPaymentInformation,
+		resourceUrlManager
+	) {
 
 		quote.getPaymentMethod().subscribe(
 			function( selectedPM ){
@@ -41,7 +41,7 @@ define(
 
 		var displayMode = window.checkoutConfig.reviewShippingDisplayMode;
 
-		return Component.extend({
+		return Component.extend( {
 			defaults: {
 				isFullTaxSummaryDisplayed: window.checkoutConfig.isFullTaxSummaryDisplayed || false,
 				displayMode: displayMode,
@@ -64,33 +64,25 @@ define(
 			},
 			hasValue: function() {
 				var price = 0;
-				if (this.totals()) {
-					price = totals.getSegment('cardgatefee').value;
+				if ( this.totals() ) {
+					price = totals.getSegment( 'cardgatefee' ).value;
 				}
 				return ( price > 0 );
 			},
 			getValue: function() {
 				var price = 0;
-				if (this.totals()) {
-					price = totals.getSegment('cardgatefee').value;
+				if ( this.totals() ) {
+					price = totals.getSegment( 'cardgatefee' ).value;
 				}
-				return this.getFormattedPrice(price);
+				return this.getFormattedPrice( price );
 			},
 			getIncludingValue: function() {
 				var price = 0;
-				if (this.totals()) {
-					//price = this.totals().cardgatefee_incl_tax;
-					price = totals.getSegment('cardgatefee').value;
+				if ( this.totals() ) {
+					price = totals.getSegment( 'cardgatefee' ).value;
 				}
-				return this.getFormattedPrice(price);
-			}/*,
-			getBaseValue: function() {
-				var price = 0;
-				if (this.totals()) {
-					price = this.totals().base_fee;
-				}
-				return priceUtils.formatPrice(price, quote.getBasePriceFormat());
-			}*/
-		});
+				return this.getFormattedPrice( price );
+			}
+		} );
 	}
 );
