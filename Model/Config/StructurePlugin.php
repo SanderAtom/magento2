@@ -6,8 +6,6 @@
  */
 namespace Cardgate\Payment\Model\Config;
 
-use Cardgate\Payment\Model\Config\Master as MasterConfig;
-
 /**
  * Config Structure plugin.
  */
@@ -19,18 +17,12 @@ class StructurePlugin {
 	protected $_scopeDefiner;
 
 	/**
-	 * @var MasterConfig
-	 */
-	protected $_masterConfig;
-
-	/**
 	 * @var \Cardgate\Payment\Model\Config
 	 */
 	protected $_cgconfig;
 
-	public function __construct( \Magento\Config\Model\Config\ScopeDefiner $scopeDefiner, MasterConfig $cardgateConfig, \Cardgate\Payment\Model\Config $config ) {
+	public function __construct( \Magento\Config\Model\Config\ScopeDefiner $scopeDefiner, \Cardgate\Payment\Model\Config $config ) {
 		$this->_scopeDefiner = $scopeDefiner;
-		$this->_masterConfig = $cardgateConfig;
 		$this->_cgconfig = $config;
 	}
 
@@ -43,7 +35,7 @@ class StructurePlugin {
 
 		if ( $pathParts[0] == 'cardgate' && count( $pathParts ) == 1 ) {
 			// get all methods
-			$allPaymentMethods = $this->_masterConfig->getCardgateMethods();
+			$allPaymentMethods = \Cardgate\Payment\Model\PaymentMethod::getAllPaymentMethods();
 
 			// get all active methods
 			$activePms = unserialize( $this->_cgconfig->getGlobal( 'active_pm' ) );

@@ -6,16 +6,10 @@
  */
 namespace Cardgate\Payment\Model;
 
-use Magento\Payment\Model\Method\ConfigInterface;
-use Magento\Store\Model\ScopeInterface;
-use Magento\Config\Model\ResourceModel\Config as ConfigResource;
-use Magento\Framework\App\Config\MutableScopeConfigInterface;
-use Cardgate\Payment\Model\Config\Master;
-
 /**
  * CardGate Magento2 module config.
  */
-class Config implements ConfigInterface {
+class Config implements \Magento\Payment\Model\Method\ConfigInterface {
 
 	/**
 	 * Active Paymentmethods as configured in my.cardgate.com (and fetched from
@@ -23,89 +17,82 @@ class Config implements ConfigInterface {
 	 */
 	private static $activePMIDs = [];
 
-	/**
-	 * @var Master
-	 */
-	private $_masterConfig;
-
-	public function __construct( MutableScopeConfigInterface $scopeConfig, ConfigResource $configResource, Master $master ) {
-		$this->_scopeConfig = $scopeConfig;
-		$this->_configResource = $configResource;
-		$this->_masterConfig = $master;
+	public function __construct( \Magento\Framework\App\Config\MutableScopeConfigInterface $oScopeConfig_ ) {
+		$this->_scopeConfig = $oScopeConfig_;
 	}
 
 	/**
 	 * Retrieve information from CardGate configuration for given paymentmethod.
+	 * @return mixed
 	 */
-	public function getField( $method, $field, $storeId = NULL ) {
-		return $this->_scopeConfig->getValue( 'payment/' . $method . '/' . $field, ScopeInterface::SCOPE_STORE, $storeId );
+	public function getField( $sMethod_, $sField_, $iStoreId_ = NULL ) {
+		return $this->_scopeConfig->getValue( 'payment/' . $sMethod_ . '/' . $sField_, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $iStoreId_ );
 	}
 
 	/**
 	 * Set information info CardGate configuration for given paymentmethod and
 	 * save configuration.
 	 */
-	public function setField( $method, $field, $value, $storeId = NULL ) {
-		$this->_scopeConfig->setValue( 'payment/' . $method . '/' . $field, $value, ScopeInterface::SCOPE_STORE, $storeId );
-		$this->_configResource->saveConfig( 'payment/' . $method . '/' . $field, $value, MutableScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0 );
+	public function setField( $sMethod_, $sField_, $mValue_, $iStoreId_ = NULL ) {
+		$this->_scopeConfig->setValue( 'payment/' . $sMethod_ . '/' . $sField_, $mValue_, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $iStoreId_ );
 	}
 
 	/**
 	 * Retrieve information from Global CardGate configuration.
+	 * @return mixed
 	 */
-	public function getGlobal( $field, $storeId = NULL ) {
-		return $this->_scopeConfig->getValue( 'cardgate/global/' . $field, ScopeInterface::SCOPE_STORE, $storeId );
+	public function getGlobal( $sField_, $iStoreId_ = NULL ) {
+		return $this->_scopeConfig->getValue( 'cardgate/global/' . $sField_, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $iStoreId_ );
 	}
 
 	/**
 	 * Set information info Global CardGate configuration and save configuration.
 	 */
-	public function setGlobal( $field, $value, $storeId = NULL ) {
-		$this->_scopeConfig->setValue( 'cardgate/global/' . $field, $value, ScopeInterface::SCOPE_STORE, $storeId );
-		$this->_configResource->saveConfig( 'cardgate/global/' . $field, $value, MutableScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0 );
+	public function setGlobal( $sField_, $mValue_, $iStoreId_ = NULL ) {
+		$this->_scopeConfig->setValue( 'cardgate/global/' . $sField_, $mValue_, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $iStoreId_ );
 	}
 
 	/**
 	 * Get active Paymentmethod ID's (CardGate style ID's).
+	 * @return array
 	 */
-	public function getActivePMIds( $storeId = 0 ) {
-		if ( isset( self::$activePMIDs[$storeId] ) && is_array( self::$activePMIDs[$storeId] ) ) {
-			return self::$activePMIDs[$storeId];
+	public function getActivePMIds( $iStoreId_ = 0 ) {
+		if (
+			isset( self::$activePMIDs[$iStoreId_] )
+			&& is_array( self::$activePMIDs[$iStoreId_] )
+		) {
+			return self::$activePMIDs[$iStoreId_];
 		}
-		self::$activePMIDs[$storeId] = [];
-		$activePmInfo = unserialize( $this->getGlobal( 'active_pm', $storeId ) );
-		if ( !is_array($activePmInfo) ) {
+		self::$activePMIDs[$iStoreId_] = [];
+		$activePmInfo = unserialize( $this->getGlobal( 'active_pm', $iStoreId_ ) );
+		if ( ! is_array( $activePmInfo ) ) {
 			$activePmInfo = [];
 		}
 		foreach ( $activePmInfo as $activePm ) {
-
-			self::$activePMIDs[$storeId][] = $activePm['id'];
+			self::$activePMIDs[$iStoreId_][] = $activePm['id'];
 		}
-		return self::$activePMIDs[$storeId];
+		return self::$activePMIDs[$iStoreId_];
 	}
 
 	/**
 	 * Sets method code.
 	 */
-	public function setMethodCode($methodCode) {
+	public function setMethodCode( $sMethodCode_ ) {
 		return NULL;
-		//$this->_methodCode = $methodCode;
 	}
 
 	/**
 	 * Sets path pattern.
 	 */
-	public function setPathPattern($pathPattern) {
+	public function setPathPattern( $sPathPattern_ ) {
 		return NULL;
-		//$this->pathPattern = $pathPattern;
 	}
 
 	/**
 	 * Retrieve information from payment configuration.
 	 */
-	public function getValue( $field, $storeId = NULL ) {
+	public function getValue( $sField_, $iStoreId_ = NULL ) {
 		return NULL;
-		//return $this->_scopeConfig->getValue( sprintf( $this->_pathPattern, $this->_methodCode, $field ), ScopeInterface::SCOPE_STORE, $storeId );
 	}
 
 }

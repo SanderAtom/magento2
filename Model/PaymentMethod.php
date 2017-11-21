@@ -9,15 +9,45 @@ namespace Cardgate\Payment\Model;
 use \Magento\Framework\App\ObjectManager;
 
 /**
- * Base Payment class from which all paymentmethods extend.
+ * Base payment method class from which all payment methods extend.
+ * NOTE the autoloader installed in registration.php dynamically generates the classes that extend from this class.
  */
-class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
+class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod {
+
+	/**
+	 * The list of payment methods CardGate supports. This list is here purely for promotial purposes. The payment
+	 * methods that are enabled for a site are fetched from the gateway.
+	 * @var array
+	 */
+	private static $_aPaymentMethods = [
+		'ideal'         => 'iDeal',
+		'mistercash'    => 'Bancontact',
+		'creditcard'    => 'Creditcard',
+		'paysafecard'   => 'PaySafeCard',
+		'sofortbanking' => 'SofortBanking',
+		'paypal'        => 'PayPal',
+		'klarna'        => 'Klarna',
+		'clickandbuy'   => 'ClickandBuy',
+		'afterpay'      => 'Afterpay',
+		'directdebit'   => 'DirectDebit',
+		'przelewy24'    => 'Przelewy24',
+		'focum'         => 'Focum',
+		'wallet'        => 'Wallet',
+		'safeklick'     => 'Safeklick',
+		'banktransfer'  => 'Bank transfer',
+		'giropay'       => 'Giropay',
+		'pos'           => 'POS',
+		'capayable'     => 'Capayable',
+		'bitcoin'       => 'Bitcoin',
+		'belfius'       => 'Belfius',
+		'eps'           => 'EPS'
+	];
 
 	/**
 	 * @see /web/js/view/payment/method-renderer
 	 * @var string
 	 */
-	public static $renderer = 'paymentmethods';
+	public static $renderer = 'generic';
 
 	/**
 	 * @var string
@@ -62,30 +92,18 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		\Magento\Payment\Helper\Data $oPaymentData_,
 		\Magento\Framework\App\Config\ScopeConfigInterface $oScopeConfig_,
 		\Magento\Payment\Model\Method\Logger $oLogger_,
-		\Cardgate\Payment\Model\Config\Master $oMaster_,
-		\Cardgate\Payment\Model\Config $oConfig_,
-		\Magento\Sales\Model\Order\Email\Sender\OrderSender $oOrderSender_,
-		\Magento\Sales\Model\Order\Email\Sender\InvoiceSender $oInvoiceSender_,
-		\Magento\Sales\Model\Order\Payment\Transaction\Repository $oTransactionRepository_,
 		\Magento\Framework\Model\ResourceModel\AbstractResource $oResource_ = NULL,
 		\Magento\Framework\Data\Collection\AbstractDb $oResourceCollection_ = NULL,
 		array $aData_ = []
 	) {
-
-		// Compose payment_code.
+		// Attempt to extract the payment method from the class name.
 		// NOTE as of v2.2.1 of Magento the class name includes Interceptor which needs to be stripped off.
-		$sClass = get_called_class();
-		if ( 'Interceptor' == substr( $sClass, -11 ) ) {
-			$sClass = substr( $sClass, 0, -12 );
+		$sClassParts = explode( 'PaymentMethod', get_called_class() );
+		if ( count( $sClassParts ) != 2 ) {
+			throw new \Exception( 'unable to extract payment method from class' );
 		}
-		$this->_code = substr( $sClass, strrpos( $sClass, '\\' ) + 1 );
-
-		// YYY: .. nah ..
-		if ( $this->_code == 'PaymentMethods' ) {
-			// .. naaaah ..
-		} else {
-			$this->_code = 'cardgate_' . $this->_code;
-		}
+		$sClassParts = explode( '\\', trim( $sClassParts[1], '\\' ) );
+		$this->_code = 'cardgate_' . $sClassParts[0];
 
 		parent::__construct(
 			$oContext_,
@@ -137,6 +155,10 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		] );
 	}
 
+	/**
+	 * Assign data to a payment method.
+	 * @return $this
+	 */
 	public function assignData( \Magento\Framework\DataObject $oData_ ) {
 		$aAdditional = $oData_->getAdditionalData();
 		if ( ! is_array( $aAdditional ) ) {
@@ -151,6 +173,10 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 		return $this;
 	}
 
+	/**
+	 * Start a refund.
+	 * @return $this
+	 */
 	public function refund( \Magento\Payment\Model\InfoInterface $oPayment_, $fAmount_ ) {
 		$oOrder = $oPayment_->getOrder();
 
@@ -192,6 +218,25 @@ class PaymentMethods extends \Magento\Payment\Model\Method\AbstractMethod {
 	 */
 	public function acceptPayment( \Magento\Payment\Model\InfoInterface $oInfo_ ) {
 		return TRUE;
+	}
+
+	/**
+	 * Returns the class for the provided payment method code (a code starts with cardgate_xxx, ie.: cardgate_bitcoin).
+	 * @return string
+	 */
+	public static function getPaymentMethodClassByCode( $sCode_ ) {
+		if ( substr( $sCode_, 0, 9 ) != 'cardgate_' ) {
+			throw new \Exception( 'invalid payment method code provided' );
+		}
+		return 'Cardgate\\Payment\\Model\\PaymentMethod\\' . substr( $sCode_, 9 );
+	}
+
+	/**
+	 * Returns the list of payment methods supported by CardGate in general.
+	 * @return array
+	 */
+	public static function getAllPaymentMethods() {
+		return self::$_aPaymentMethods;
 	}
 
 }

@@ -60,7 +60,6 @@ define(
 				return 'excluding' == this.displayMode;
 			},
 			isDisplayed: function() {
-				console.log(this);
 				return this.isFullMode();
 			},
 			hasValue: function() {

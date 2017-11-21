@@ -13,26 +13,21 @@ use Magento\Framework\App\Config\Initial;
  */
 class InitialPlugin {
 
-	private $_masterConfig = NULL;
-
-	public function __construct( Master $masterConfig ) {
-		$this->_masterConfig = $masterConfig;
-	}
-
 	/**
 	 * Alter getData's output.
 	 */
 	public function aroundGetData( Initial $initialConfig, \Closure $proceed, $scope ) {
-		$data = $proceed( $scope );
-		foreach ( $this->_masterConfig->getPaymentMethods( TRUE ) as $paymentMethod => $paymentMethodName ) {
-			$data['payment'][$paymentMethod] = [
-				'model' => $this->_masterConfig->getPMClassByCode( $paymentMethod ),
-				'label' => $paymentMethod,
+		$aData = $proceed( $scope );
+		foreach ( \Cardgate\Payment\Model\PaymentMethod::getAllPaymentMethods() as $sPaymentMethodId => $sPaymentMethodName ) {
+			$sPaymentMethodCode = 'cardgate_' . $sPaymentMethodId;
+			$aData['payment'][$sPaymentMethodCode] = [
+				'model' => \Cardgate\Payment\Model\PaymentMethod::getPaymentMethodClassByCode( $sPaymentMethodCode ),
+				'label' => $sPaymentMethodCode,
 				'group' => 'cardgate',
-				'title' => $paymentMethodName
+				'title' => $sPaymentMethodName
 			];
 		}
-		return $data;
+		return $aData;
 	}
 
 }

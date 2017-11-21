@@ -11,16 +11,6 @@
 	<type name="Magento\Tax\Helper\Data">
 		<plugin name="cardgate_taxdata" type="Cardgate\Payment\Helper\TaxData" />
 	</type>
-	<type name="Cardgate\Payment\Model\Config\InitialPlugin">
-		<arguments>
-			<argument name="masterConfig" xsi:type="object">Cardgate\Payment\Model\Config\Master</argument>
-		</arguments>
-	</type>
-	<type name="Cardgate\Payment\Model\PaymentMethods">
-		<arguments>
-			<argument name="masterConfig" xsi:type="object">Cardgate\Payment\Model\Config\Master</argument>
-		</arguments>
-	</type>
 	<virtualType name="Magento\Framework\App\Config\PreProcessorComposite">
 		<arguments>
 			<argument name="processors" xsi:type="array">

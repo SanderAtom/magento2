@@ -9,7 +9,7 @@
 		<cardgate>
 			<global>
 				<title>CardGate</title>
-				<model>Cardgate\Payment\Model\PaymentMethods</model>
+				<model>Cardgate\Payment\Model\PaymentMethod</model>
 				<debug>1</debug>
 				<active>0</active>
 				<testmode>1</testmode>

@@ -9,10 +9,11 @@ namespace Cardgate\Payment\Model\PaymentMethod;
 /**
  * iDeal exception class because we want another renderer template.
  */
-class ideal extends \Cardgate\Payment\Model\PaymentMethods {
+class ideal extends \Cardgate\Payment\Model\PaymentMethod {
 
 	/**
 	 * Renderer template name.
+	 * @var string
 	 */
 	public static $renderer = 'ideal';
 

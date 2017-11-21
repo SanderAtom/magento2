@@ -6,7 +6,7 @@
 define(
 	[
 		'Magento_Checkout/js/model/quote',
-		'Magento_Checkout/js/model/url-builder',
+		'mage/url',
 		'mage/storage',
 		'Magento_Checkout/js/model/error-processor',
 		'Magento_Customer/js/model/customer',
@@ -18,12 +18,28 @@ define(
 		'use strict';
 
 		return function (messageContainer, paymentData) {
+			fullScreenLoader.startLoader();
+			return storage.get( urlBuilder.build( 'cardgate/payment/updatepm?pm=' + paymentData.method ) )
+				.fail(
+					function( response ) {
+					}
+				).done(
+					function() {
+						getTotalsAction([]);
+					}
+				).always(
+					function() {
+						fullScreenLoader.stopLoader();
+					}
+				)
+			;
+
+
+/*
 			var serviceUrl,
 				payload;
 
-			/**
-			 * Checkout for guest and registered customer.
-			 */
+			// Checkout for guest and registered customer.
 			if (!customer.isLoggedIn()) {
 				serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/set-payment-information', {
 					cartId: quote.getQuoteId()
@@ -60,6 +76,7 @@ define(
 					fullScreenLoader.stopLoader();
 				}
 			);
+*/
 		};
 	}
 );

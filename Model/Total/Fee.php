@@ -6,7 +6,6 @@
  */
 namespace Cardgate\Payment\Model\Total;
 
-use \Cardgate\Payment\Model\Config\Master;
 use \Magento\Framework\App\ObjectManager;
 use \Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector;
 
@@ -21,10 +20,7 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 
 	protected $quoteValidator = NULL;
 
-	protected $_cardgateConfig;
-
-	public function __construct( \Magento\Quote\Model\QuoteValidator $quoteValidator, Master $cardgateConfig ) {
-		$this->_cardgateConfig = $cardgateConfig;
+	public function __construct( \Magento\Quote\Model\QuoteValidator $quoteValidator ) {
 		$this->quoteValidator = $quoteValidator;
 	}
 
@@ -36,8 +32,10 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 		}
 
 		$fee = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Total\\FeeData' );
-		if ( ! empty( $quote->getPayment()->getMethod() ) && $this->_cardgateConfig->isCardgateCode( $quote->getPayment()
-			->getMethod() ) ) {
+		if (
+			! empty( $quote->getPayment()->getMethod() )
+			&& substr( $quote->getPayment()->getMethod(), 0, 9 ) == 'cardgate_'
+		) {
 			$fee = $quote->getPayment()
 				->getMethodInstance()
 				->getFeeForQuote( $quote, $total );
@@ -99,8 +97,10 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal {
 
 	public function fetch( \Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total ) {
 		$fee = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Total\\FeeData' );
-		if ( ! empty( $quote->getPayment()->getMethod() ) && $this->_cardgateConfig->isCardgateCode( $quote->getPayment()
-			->getMethod() ) ) {
+		if (
+			! empty( $quote->getPayment()->getMethod() )
+			&& substr( $quote->getPayment()->getMethod(), 0, 9 ) == 'cardgate_'
+		) {
 			$fee = $quote->getPayment()
 				->getMethodInstance()
 				->getFeeForQuote( $quote );

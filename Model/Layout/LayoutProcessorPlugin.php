@@ -6,7 +6,6 @@
  */
 namespace Cardgate\Payment\Model\Layout;
 
-use Cardgate\Payment\Model\Config\Master;
 use Magento\Checkout\Block\Checkout\LayoutProcessor;
 
 /**
@@ -15,31 +14,23 @@ use Magento\Checkout\Block\Checkout\LayoutProcessor;
 class LayoutProcessorPlugin {
 
 	/**
-	 * @var Master $_masterConfig
-	 */
-	private $_masterConfig = NULL;
-
-	public function __construct( Master $masterConfig ) {
-		$this->_masterConfig = $masterConfig;
-	}
-
-	/**
 	 * Inject paymentmethods in checkout billing-step section.
 	 */
 	public function aroundProcess( LayoutProcessor $layoutProcessor, \Closure $proceed, $scope ) {
-		$data = $proceed( $scope );
-		$arr = [
+		$aData = $proceed( $scope );
+		$aSubData = [
 			'component' => 'Cardgate_Payment/js/view/payment/paymentmethods',
-			'label' => 'CardGate',
-			'methods' => []
+			'label'     => 'CardGate',
+			'methods'   => []
 		];
-		foreach ( $this->_masterConfig->getPaymentMethods() as $paymentMethod ) {
-			$arr['methods'][$paymentMethod] = [
+		foreach ( \Cardgate\Payment\Model\PaymentMethod::getAllPaymentMethods() as $sPaymentMethodId => $sPaymentMethodName ) {
+			$sPaymentMethodCode = 'cardgate_' . $sPaymentMethodId;
+			$aSubData['methods'][$sPaymentMethodCode] = [
 				'isBillingAddressRequired' => TRUE
 			];
 		}
-		$data['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['renders']['children']['cardgate'] = $arr;
-		return $data;
+		$aData['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['renders']['children']['cardgate'] = $aSubData;
+		return $aData;
 	}
 
 }

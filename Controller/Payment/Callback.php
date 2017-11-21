@@ -14,7 +14,6 @@ use \Magento\Framework\App\ObjectManager;
 class Callback extends \Magento\Framework\App\Action\Action {
 
 	public function execute() {
-		$oMasterConfig = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\Config\Master::class );
 		$oResult = $this->resultFactory->create( \Magento\Framework\Controller\ResultFactory::TYPE_RAW );
 		$oOrder = $oPayment = NULL;
 
@@ -108,9 +107,7 @@ class Callback extends \Magento\Framework\App\Action\Action {
 				$oPayment->setTransactionId( $sTransactionId );
 				$oPayment->setCurrencyCode( $sCurrency );
 				$oPayment->registerCaptureNotification( $iAmount / 100 );
-				if ( $oMasterConfig->hasPMId( $sPt ) ) {
-					$oPayment->setMethod( $oMasterConfig->getPMCodeById( $sPt ) );
-				}
+				$oPayment->setMethod( 'cardgate_' . $sPt );
 
 				if ( ! $oOrder->getEmailSent() ) {
 					ObjectManager::getInstance()->get( \Magento\Sales\Model\Order\Email\Sender\OrderSender::class )->send( $oOrder );

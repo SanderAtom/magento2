@@ -7,5 +7,5 @@
 ?>
 <dl class="payment-method purchase order">
 	<dt class="title"><?php echo $block->escapeHtml( $block->getMethod()->getTitle() ) ?> by CardGate</dt>
-	<dd class="content"><strong><?php echo $block->escapeHtml( __( 'Transaction ID' ) ) ?></strong> <?php echo $block->escapeHtml( $block->getInfo()->getCardgateTransaction() ) ?></dd>
+	<dt class="content"><strong><?php echo $block->escapeHtml( __( 'Transaction Id' ) ) ?></strong> <?php echo $block->escapeHtml( $block->getInfo()->getCardgateTransaction() ) ?></dt>
 </dl>

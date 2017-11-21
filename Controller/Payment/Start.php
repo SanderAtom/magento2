@@ -175,7 +175,7 @@ class Start extends \Magento\Framework\App\Action\Action {
 			}
 
 			// If there was an issuer present (most likely iDeal), configure the transaction with this issuer. The
-			// issuer is stored as additional data in the assignData method from Model/PaymentMethods.php.
+			// issuer is stored as additional data in the assignData method from Model/PaymentMethod.php.
 			$oPayment = $oOrder->getPayment();
 			$aData = $oPayment->getAdditionalInformation();
 

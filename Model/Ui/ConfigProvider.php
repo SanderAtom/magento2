@@ -18,21 +18,22 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface 
 	 */
 	public function getConfig() {
 		$oSession = ObjectManager::getInstance()->get( \Magento\Checkout\Model\Session::class );
-		$oMasterConfig = ObjectManager::getInstance()->get( \Cardgate\Payment\Model\Config\Master::class );
 		$aConfig = [];
 		$aConfig['payment'] = [];
 		$aConfig['payment']['instructions'] = [];
 		// iDeal issuers are globally assigned to the UI config.
 		$aConfig['payment']['cardgate_ideal_issuers'] = $this->getIDealIssuers();
-		foreach ( $oMasterConfig->getPaymentMethods() as $sMethod ) {
-			$sMethodClass = $oMasterConfig->getPMClassByCode( $sMethod );
-			$oFee = $oMasterConfig->getPMInstanceByCode( $sMethod )->getFeeForQuote( $oSession->getQuote() );
-			$aConfig['payment'][$sMethod] = [
+
+		foreach ( \Cardgate\Payment\Model\PaymentMethod::getAllPaymentMethods() as $sPaymentMethodId => $sPaymentMethodName ) {
+			$sPaymentMethodCode = 'cardgate_' . $sPaymentMethodId;
+			$sMethodClass = \Cardgate\Payment\Model\PaymentMethod::getPaymentMethodClassByCode( $sPaymentMethodCode );
+			$oFee = ObjectManager::getInstance()->get( $sMethodClass )->getFeeForQuote( $oSession->getQuote() );
+			$aConfig['payment'][$sPaymentMethodCode] = [
 				'renderer'       => $sMethodClass::$renderer,
 				'cardgatefee'    => $oFee->getAmount(),
 				'cardgatefeetax' => $oFee->getTaxAmount()
 			];
-			$aConfig['payment']['instructions'][$sMethod] = 'Test instructies';
+			$aConfig['payment']['instructions'][$sPaymentMethodCode] = 'Test instructies';
 		}
 		return $aConfig;
 	}

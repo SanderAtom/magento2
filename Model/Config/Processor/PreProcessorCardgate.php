@@ -6,31 +6,26 @@
  */
 namespace Cardgate\Payment\Model\Config\Processor;
 
-use Magento\Config\Model\Placeholder\PlaceholderFactory;
-use Magento\Framework\App\Config\Spi\PreProcessorInterface;
-use Magento\Framework\Stdlib\ArrayManager;
-use Cardgate\Payment\Model\Config\Master;
-use Magento\Framework\App\ObjectManager;
+use \Magento\Framework\App\ObjectManager;
 
-class PreProcessorCardgate implements PreProcessorInterface {
+class PreProcessorCardgate implements \Magento\Framework\App\Config\Spi\PreProcessorInterface {
 
-	public function process( array $config ) {
-		$masterConfig = ObjectManager::getInstance()->create( 'Cardgate\\Payment\\Model\\Config\\Master' );
-		foreach ( $masterConfig->getPaymentMethods( TRUE ) as $paymentMethod => $paymentMethodName ) {
-			if ( !isset( $config['default']['payment'][$paymentMethod] ) ) {
-				$config['default']['payment'][$paymentMethod] = array();
+	public function process( array $aConfig_ ) {
+		foreach ( \Cardgate\Payment\Model\PaymentMethod::getAllPaymentMethods() as $sPaymentMethodId => $sPaymentMethodName ) {
+			$sPaymentMethodCode = 'cardgate_' . $sPaymentMethodId;
+			if ( ! isset( $aConfig_['default']['payment'][$sPaymentMethodCode] ) ) {
+				$aConfig_['default']['payment'][$sPaymentMethodCode] = [];
 			}
-			if ( is_array( $config['default']['payment'][$paymentMethod] ) ) {
-				$config['default']['payment'][$paymentMethod] = array_merge(
-						[
-							'model' => $masterConfig->getPMClassByCode( $paymentMethod ),
-							'label' => $paymentMethod,
-							'group' => 'cardgate',
-							'title' => $paymentMethodName
-						], $config['default']['payment'][$paymentMethod] );
+			if ( is_array( $aConfig_['default']['payment'][$sPaymentMethodCode] ) ) {
+				$aConfig_['default']['payment'][$sPaymentMethodCode] = array_merge( [
+					'model' => \Cardgate\Payment\Model\PaymentMethod::getPaymentMethodClassByCode( $sPaymentMethodCode ),
+					'label' => $sPaymentMethodCode,
+					'group' => 'cardgate',
+					'title' => $sPaymentMethodName
+				], $aConfig_['default']['payment'][$sPaymentMethodCode] );
 			}
 		}
-		return $config;
+		return $aConfig_;
 	}
 
 }

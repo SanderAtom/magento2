@@ -15,9 +15,6 @@ class Fee extends \Magento\Sales\Model\Order\Invoice\Total\AbstractTotal {
 		parent::__construct( $data );
 	}
 
-	/**
-	 * Collect Weee amounts for the invoice.
-	 */
 	public function collect ( \Magento\Sales\Model\Order\Invoice $invoice ) {
 		$store = $invoice->getStore();
 		$order = $invoice->getOrder();
