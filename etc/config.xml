@@ -10,7 +10,6 @@
 			<global>
 				<title>CardGate</title>
 				<model>Cardgate\Payment\Model\PaymentMethod</model>
-				<debug>1</debug>
 				<active>0</active>
 				<testmode>1</testmode>
 				<gateway_locale>nl_NL</gateway_locale>

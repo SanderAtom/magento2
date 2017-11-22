@@ -36,8 +36,6 @@
 "Payment fees tax","Betaaltoeslag BTW"
 "Tax Class for CardGate Payment fees","BTW Tarief voor CardGate Betaaltoeslag"
 "This sets whether CardGate Payment fees entered from Magento Admin include tax.","Dit geeft aan of de CardGate Betaaltoeslagen worden ingegeven in de Magento Admin inclusief BTW zijn."
-"CardGate debuglog", "CardGate debuglog"
-"Will log details for debugging purposes.","Logt details voor debug doeleinden."
 
 "Enabled","Ingeschakeld"
 "Title","Titel"

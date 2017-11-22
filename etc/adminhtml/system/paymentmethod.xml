@@ -5,8 +5,7 @@
 	See LICENSE for license details.
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
-	<section id="cardgate_pm_skelleton_section" translate="label" type="text" sortOrder="410" showInDefault="1" showInWebsite="1"
-		showInStore="1">
+	<section id="cardgate_pm_skelleton_section" translate="label" type="text" sortOrder="410" showInDefault="1" showInWebsite="1" showInStore="1">
 		<group id="pm_skelleton" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
 			<label>CardGate %s</label>
 			<frontend_model>Cardgate\Payment\Block\Adminhtml\Config\GroupPaymentMethod</frontend_model>
@@ -38,8 +37,7 @@
 				<frontend_class>validate-number</frontend_class>
 				<comment><![CDATA[Fixed Payment fee amount. Can be used in conjunction with Payment fee Percentage.]]></comment>
 			</field>
-			<field id="paymentfee_percentage" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
-				showInStore="1">
+			<field id="paymentfee_percentage" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
 				<label>Payment fee Percentage</label>
 				<frontend_class>validate-number</frontend_class>
 				<comment><![CDATA[Payment fee percentage. Can be used in conjunction with Payment fee Fixed. Note: Fixed amount will be applied after percentage.]]></comment>

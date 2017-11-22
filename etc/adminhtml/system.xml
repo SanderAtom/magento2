@@ -91,11 +91,6 @@
 					<label>Tax Class for CardGate Payment fees</label>
 					<source_model>Magento\Tax\Model\TaxClass\Source\Product</source_model>
 				</field>
-				<field id="debug" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
-					<label>CardGate debuglog</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-					<comment><![CDATA[Will log details for debugging purposes.]]></comment>
-				</field>
 			</group>
 		</section>
 		<include path="Cardgate_Payment::system/paymentmethod.xml" />

@@ -36,8 +36,6 @@
 "Payment fees tax","Zahlungsgebühr Steuern"
 "Tax Class for CardGate Payment fees","Steuerklasse für CardGate Zahlungsgebühren"
 "This sets whether CardGate Payment fees entered from Magento Admin include tax.","Dies stellt dar, ob die CardGate Zahlungsgebühren von der Magneto Admin inklusive Steuern sind."
-"CardGate debuglog","CardGate Debuglog"
-"Will log details for debugging purposes.","Logt details für Debug Zwecke"
 
 "Enabled","Aktiviert"
 "Title","Titel"
