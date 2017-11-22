@@ -37,23 +37,23 @@ class TaxData extends \Magento\Tax\Helper\Data {
 			$aTaxClassAmount = $this->calculateTaxForItems( $oSource_, $oCurrent );
 
 			// Apply any taxes for cardgatefee.
-			$fCardgatefeeTaxAmount = $source->getCardgatefeeTaxAmount();
-			$fOriginalCardgatefeeTaxAmount = $current->getCardgatefeeTaxAmount();
+			$fCardgatefeeTaxAmount = $oSource_->getCardgatefeeTaxAmount();
+			$fOriginalCardgatefeeTaxAmount = $oCurrent->getCardgatefeeTaxAmount();
 			if (
 				$fCardgatefeeTaxAmount
 				&& $fOriginalCardgatefeeTaxAmount
 				&& $fCardgatefeeTaxAmount != 0
 				&& floatval( $fOriginalCardgatefeeTaxAmount )
 			) {
-				$oOrderTaxDetails = $this->orderTaxManagement->getOrderTaxDetails( $source->getId() );
+				$oOrderTaxDetails = $this->orderTaxManagement->getOrderTaxDetails( $oSource_->getId() );
 
 				// An invoice or credit memo can have a different qty than its
-				// order
+				// order.
 				$fCardgatefeeRatio = $fCardgatefeeTaxAmount / $fOriginalCardgatefeeTaxAmount;
 				$aItemTaxDetails = $oOrderTaxDetails->getItems();
 				foreach ( $aItemTaxDetails as $oItemTaxDetail ) {
 
-					// Aggregate taxable items associated with shipping
+					// Aggregate taxable items associated with shipping.
 					if ( $oItemTaxDetail->getType() == \Cardgate\Payment\Model\Total\Fee::TYPE_FEE ) {
 						$aTaxClassAmount = $this->_aggregateTaxes( $aTaxClassAmount, $oItemTaxDetail, $fCardgatefeeRatio );
 					}
@@ -93,13 +93,13 @@ class TaxData extends \Magento\Tax\Helper\Data {
 			$sTaxCode = $oItemAppliedTax->getCode();
 
 			if ( ! isset( $aTaxClassAmount_[$sTaxCode] ) ) {
-				$sTaxCode[$sTaxCode]['title'] = $oItemAppliedTax->getTitle();
-				$sTaxCode[$sTaxCode]['percent'] = $oItemAppliedTax->getPercent();
-				$sTaxCode[$sTaxCode]['tax_amount'] = $fTaxAmount;
-				$sTaxCode[$sTaxCode]['base_tax_amount'] = $fBaseTaxAmount;
+				$aTaxClassAmount_[$sTaxCode]['title'] = $oItemAppliedTax->getTitle();
+				$aTaxClassAmount_[$sTaxCode]['percent'] = $oItemAppliedTax->getPercent();
+				$aTaxClassAmount_[$sTaxCode]['tax_amount'] = $fTaxAmount;
+				$aTaxClassAmount_[$sTaxCode]['base_tax_amount'] = $fBaseTaxAmount;
 			} else {
-				$sTaxCode[$sTaxCode]['tax_amount'] += $fTaxAmount;
-				$sTaxCode[$sTaxCode]['base_tax_amount'] += $fBaseTaxAmount;
+				$aTaxClassAmount_[$sTaxCode]['tax_amount'] += $fTaxAmount;
+				$aTaxClassAmount_[$sTaxCode]['base_tax_amount'] += $fBaseTaxAmount;
 			}
 		}
 
