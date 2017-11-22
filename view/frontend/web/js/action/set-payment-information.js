@@ -27,7 +27,7 @@ define(
 					}
 				).done(
 					function() {
-						getTotalsAction([]);
+						getTotalsAction( [] );
 					}
 				)
 			;
