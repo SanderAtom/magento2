@@ -7,7 +7,7 @@
 "Test settings","Testeinstellungen"
 "Version","Version"
 "Test Gateway communication","Testplattform Kommunikation"
-"Please enter api-username & api-password first","Bitte füllen Sie erst den API-Benutzernamen & API-Passwort ein"
+"Please enter Site Id, Hash key, Merchant Id and API key first","Bitte füllen Sie erst den Site Id, Hash key, Merchant Id und API key ein"
 "TESTMODE ENABLED","TESTMODUS AKTIVIERT"
 "UNKNOWN","UNBEKANNT"
 "Paymentmethods","Zahlungsmethoden"

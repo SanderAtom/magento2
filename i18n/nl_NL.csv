@@ -7,7 +7,7 @@
 "Test settings","Test instellingen"
 "Version","Versie"
 "Test Gateway communication","Test platform communicatie"
-"Please enter api-username & api-password first","Voer eerst de api-gebruikersnaam & api-wachtwoord in"
+"Please enter Site Id, Hash key, Merchant Id and API key first","Voer eerst de Site Id, Hash key, Merchant Id en API key in"
 "TESTMODE ENABLED","TESTMODE INGESCHAKELD"
 "UNKNOWN","ONBEKEND"
 "Paymentmethods","Betaalmethoden"
